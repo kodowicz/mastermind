@@ -1,0 +1,73 @@
+.colors {
+  height: 100px;
+  width: 90vw;
+  max-width: 500px;
+  margin: 50px auto;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.color-slot {
+  width: 60px;
+  height: 60px;
+}
+
+.ball {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  box-shadow: 7px 7px 10px 0px rgba(0,0,0,0.25), inset -5px -5px 15px 1px rgba(0,0,0,0.15);
+}
+
+
+.white {
+  background: #FFFFFF;
+}
+
+.yellow {
+  background: #FFF742;
+}
+
+.blue {
+  background: #3D45FF;
+}
+
+.green {
+  background: #80fd52;
+}
+
+.red {
+  background: #FF4747;
+}
+
+.black {
+  background: #303030;
+}
+
+
+
+
+
+.game {
+  width: 90vw;
+  max-width: 500px;
+  height: 65vh;
+  margin: 50px auto 0;
+  box-shadow: 0 0 20px rgba(0,0,0,.3);
+}
+
+.round {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.slot {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  box-shadow:  inset -5px -5px 15px 1px rgba(0,0,0,0.15);
+  background: #000;
+}
