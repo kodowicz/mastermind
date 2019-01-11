@@ -1,9 +1,26 @@
+html {
+  height: 100vh;
+  font-size: 14px;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #50539E
+}
+
+.title {
+  display: none;
+}
+.game {
+  height: 80vh;
+  width: 90%;
+  margin: 10vh auto;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
+}
+
 .colors {
   height: 100px;
-  width: 90vw;
   max-width: 500px;
-  margin: 50px auto;
-  box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
   border-radius: 10px;
   display: flex;
   justify-content: space-evenly;
@@ -11,15 +28,15 @@
 }
 
 .color-slot {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
 }
 
 .ball {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 30px;
-  box-shadow: 7px 7px 10px 0px rgba(0,0,0,0.25), inset -5px -5px 15px 1px rgba(0,0,0,0.15);
+  box-shadow: 3px 3px 7px 0px rgba(0,0,0,0.1), inset -5px -5px 15px 1px rgba(0,0,0,0.15);
 }
 
 
@@ -48,26 +65,94 @@
 }
 
 
+.check {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center
+}
+
+.slots {
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+}
+
+.slot {
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  background: #D2D2D4;
+}
+
+.submit-button {
+  width: 5rem;
+  height: 2.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: #50539E;
+  font-size: 14px;
+  background: none;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px 0px rgba(0,0,0,.1)
+}
 
 
 
-.game {
-  width: 90vw;
-  max-width: 500px;
-  height: 65vh;
-  margin: 50px auto 0;
-  box-shadow: 0 0 20px rgba(0,0,0,.3);
+.checked-colors {
+  margin-top: 10vh;
+  padding: 0 10vw
+}
+
+.labels {
+  display: flex;
+  font-size: 1.2rem;
+  margin: 15px 0
 }
 
 .round {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
-.slot {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  box-shadow:  inset -5px -5px 15px 1px rgba(0,0,0,0.15);
-  background: #000;
+.quesses {
+  width: 70%;
+  height: 50px;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-top: 1px solid #B3B3B3
+}
+
+/*.line {
+  height: 1px;
+  width: 50px;
+  background: #B3B3B3;
+  transform: rotate(90deg) translateX(25px);
+  transform-origin: center;
+}*/
+
+.ratings {
+  display: grid;
+  width: 20%;
+  height: 50px;
+  grid-template-rows: 10px 10px;
+  grid-template-columns: 10px 10px;
+  grid-gap: 5px;
+  place-content: center
+}
+
+.helper {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+}
+
+.white-helper {
+  background: #9E9E9E
+}
+
+.black-helper {
+  background: #1F2038
 }
