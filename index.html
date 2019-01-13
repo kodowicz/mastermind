@@ -4,93 +4,113 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,900" rel="stylesheet">
     <title>Mastermind</title>
   </head>
   <body>
 
-    <div class="colors">
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball white" id="white"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball yellow" id="yellow"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball red" id="red"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball green" id="green"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball blue" id="blue"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-      <div class="color-slot"
-           ondrop="return onDrop(event)"
-           ondragover="return onDragOver(event)">
-        <div class="ball black" id="black"
-             draggable="true"
-             ondragstart="return onDragStart(event)"
-             ondragend="return onDragEnd(event)">
-        </div>
-      </div>
-    </div>
+    <h1 class="title">
+      <span class="title-left">master</span>
+      <span class="title-right">mind</span>
+    </h1>
 
 
     <div class="game">
-      <div class="round" id="round-1">
-        <div class="slot"
+      <div class="colors">
+        <div class="color-slot"
              ondrop="return onDrop(event)"
              ondragover="return onDragOver(event)">
+          <div class="ball white" id="white" data-color="white"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
         </div>
-        <div class="slot"
+        <div class="color-slot"
              ondrop="return onDrop(event)"
              ondragover="return onDragOver(event)">
+          <div class="ball red" id="red" data-color="red"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
         </div>
-        <div class="slot"
+        <div class="color-slot"
              ondrop="return onDrop(event)"
              ondragover="return onDragOver(event)">
+          <div class="ball yellow" id="yellow" data-color="yellow"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
         </div>
-        <div class="slot"
+        <div class="color-slot"
              ondrop="return onDrop(event)"
              ondragover="return onDragOver(event)">
+          <div class="ball black" id="black" data-color="black"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
+        </div>
+        <div class="color-slot"
+             ondrop="return onDrop(event)"
+             ondragover="return onDragOver(event)">
+          <div class="ball blue" id="blue" data-color="blue"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
+        </div>
+        <div class="color-slot"
+             ondrop="return onDrop(event)"
+             ondragover="return onDragOver(event)">
+          <div class="ball green" id="green" data-color="green"
+               draggable="true"
+               ondragstart="return onDragStart(event)"
+               ondragend="return onDragEnd(event)">
+          </div>
         </div>
       </div>
 
-    </div>
+      <div class="check">
+        <div class="slots">
+          <div class="slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+          </div>
+          <div class="slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+          </div>
+          <div class="slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+          </div>
+          <div class="slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+          </div>
+        </div>
 
-    <button class="submit-button" id="submit" type="submit">submit</button>
+        <button class="submit-button" id="submit" type="button">check</button>
+      </div>
+
+      <div class="checked-colors">
+        <div class="labels">
+          <div class="left-label">guesses</div>
+          <div class="line"></div>
+          <div class="right-label">ratings</div>
+        </div>
+
+
+        <div class="rounds">
+        </div>
+      </div>
+    </div>
 
 
     <script src="index.js"></script>
+    <script src="game.js"></script>
   </body>
 </html>
