@@ -11,30 +11,35 @@ body {
 .title {
   display: none;
 }
+
 .game {
-  height: 80vh;
-  width: 90%;
-  margin: 10vh auto;
-  box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
+  height: 90vh;
+  width: 40%;
+  max-width: 450px;
+  margin: 5vh auto;
+  box-shadow: 0 0 60px 0 rgba(0,0,0,0.1);
+  border-radius: 10px
 }
 
 .colors {
-  height: 100px;
+  height: 85px;
   max-width: 500px;
   border-radius: 10px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
+  /*box-shadow: 0px 20px 20px -15px rgba(0,0,0,.1)*/
 }
 
 .color-slot {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+  margin: 0 7px;
 }
 
 .ball {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 30px;
   box-shadow: 3px 3px 7px 0px rgba(0,0,0,0.1), inset -5px -5px 15px 1px rgba(0,0,0,0.15);
 }
@@ -66,9 +71,13 @@ body {
 
 
 .check {
+  width: 80%;
+  height: 80px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-evenly;
-  align-items: center
+  align-items: center;
+  perspective: 1000px;
 }
 
 .slots {
@@ -78,8 +87,8 @@ body {
 }
 
 .slot {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 30px;
   background: #D2D2D4;
 }
@@ -91,23 +100,56 @@ body {
   font-weight: 700;
   color: #50539E;
   font-size: 14px;
-  background: none;
+  background: #ffffff;
   border: none;
   border-radius: 20px;
-  box-shadow: 5px 5px 10px 0px rgba(0,0,0,.1)
+  outline: none;
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,.1);
+  transition: transform 0.2s ease-out,
+              box-shadow 0.2s ease-out,
+              background 0.1s ease-out
 }
+
+.submit-button:active {
+  transform: translateY(2px);
+  box-shadow: 0px 5px 10px -5px rgba(0,0,0,.1);
+  border: 1px solid #999DF4
+}
+
+
+
 
 
 
 .checked-colors {
-  margin-top: 10vh;
-  padding: 0 10vw
+  margin-top: 50px;
+  padding: 0 17%
 }
 
 .labels {
+  position: relative;
   display: flex;
-  font-size: 1.2rem;
-  margin: 15px 0
+  justify-content: space-between;
+  margin: 10px 0
+}
+
+.left-label {
+  width: 70%
+}
+
+.right-label {
+  width: 20%;
+  text-align: center;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 76%;
+  height: 1px;
+  background: #B3B3B3;
+  transform: rotate(90deg) translateX(10px);
+  transform-origin: left
 }
 
 .round {
@@ -115,37 +157,43 @@ body {
   justify-content: space-between;
 }
 
-.quesses {
+.guesses {
   width: 70%;
-  height: 50px;
-
+  height: 47px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-top: 1px solid #B3B3B3
+  border-top: 1px solid #B3B3B3;
 }
 
-/*.line {
-  height: 1px;
-  width: 50px;
-  background: #B3B3B3;
-  transform: rotate(90deg) translateX(25px);
-  transform-origin: center;
-}*/
+.guess-ball {
+  width: 37px;
+  height: 37px;
+  border-radius: 30px;
+  box-shadow: 3px 3px 7px 0px rgba(0,0,0,0.1), inset -5px -5px 15px 1px rgba(0,0,0,0.15);
+
+}
+
 
 .ratings {
   display: grid;
-  width: 20%;
-  height: 50px;
-  grid-template-rows: 10px 10px;
-  grid-template-columns: 10px 10px;
-  grid-gap: 5px;
-  place-content: center
+  width: 16%;
+  height: 47px;
+  margin: 0 2%;
+  grid-template-rows: 12px 12px;
+  grid-template-columns: 12px 12px;
+  grid-gap: 5px 7px;
+  place-content: center;
+  border-top: 1px solid #B3B3B3;
+}
+
+.first {
+  border: none
 }
 
 .helper {
-  width: 10px;
-  height: 10px;
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
 }
 
