@@ -45,14 +45,13 @@ function createElement(className, idName) {
 
   element.className = className;
   element.id = `${idName}${index}`;
+  element.setAttribute('data-color', idName);
   element.setAttribute('draggable', 'true');
   element.setAttribute('ondragstart', 'return onDragStart(event)');
   element.setAttribute('ondragend', 'return onDragEnd(event)');
-  element.innerHTML = index;
 
   return element;
 }
-
 
 function onDragStart(event) {
   createChild = event.target;
@@ -62,13 +61,9 @@ function onDragStart(event) {
   event.dataTransfer.setData("text", event.target.getAttribute('id'));
 
   // celem jest element w slot
-  if (event.target.parentNode.classList.contains('slot') ||
-      event.target.parentNode.classList.contains('color-slot')) {
+  if (event.target.parentNode.matches('.slot') ||
+      event.target.parentNode.matches('.color-slot')) {
     lastTargetSlot = event.target.parentNode;
-
-  /*} else if (event.target.parentNode.parentNode == placeholder) {
-    lastTargetSlot = event.target.parentNode;
-    console.log(lastTargetSlot)*/
   }
   return true;
 }
@@ -78,6 +73,8 @@ function onDrop(event) {
   const data = event.dataTransfer.getData("text");
   let targetParent = event.target.parentNode;
 
+  //console.log(createChild);
+
 
   // ball w to samo miejsce gdzie było
   if (lastTargetSlot === targetParent) {
@@ -86,77 +83,63 @@ function onDrop(event) {
 
     if (targetParent.className === 'color-slot') {
 
-      // kulka na placeholder
-      if (lastTargetSlot.className === 'slot') {
-        const newElement = createElement(event.target.className, event.target.id);
-        lastTargetSlot.removeChild(createChild);
-        lastTargetSlot.appendChild(newElement);
-
-        return;
+      // usunięcie kulki z slot
+      if (removeNumbers(lastTargetSlot.children[0].id) === removeNumbers(event.target.id)) {
+        lastTargetSlot.removeChild(document.getElementById(data))
+        //console.log('usunięcie kulki z slot');
       } else {
         // placeholder na placeholder
-        return;
+        //console.log('placeholder na placeholder lub kulka na placeholder');
       }
+
+      // kulka na placeholder
+      //if (lastTargetSlot.className === 'slot') {
+        //const newElement = createElement(event.target.className, event.target.id);
+        //lastTargetSlot.removeChild(createChild);
+        //lastTargetSlot.appendChild(newElement);
+        ////console.log('kulka na placeholder');        // usunąć tę opcję
+        //return;
+      //}
+      return;
     }
 
   // przeniesienie kulki z slot do colors
-    if (createChild.parentNode.className === 'color-slot') {
-      //console.log('slot -> placeholder');
+    if (createChild.parentNode.matches('.color-slot')) {
       const newElement = createElement(createChild.className, createChild.id);
-      //createChild.parentNode.appendChild(newElement);
-      //event.target.appendChild(document.getElementById(data));
-
 
       // zamiana kuli z placeholder do zajętego slot
-      if (event.target.classList.contains('ball')) {
+      if (event.target.matches('.ball')) {
         targetParent.removeChild(event.target);
         targetParent.appendChild(document.getElementById(data));
         lastTargetSlot.appendChild(newElement);
+        //console.log('zamiana kuli z placeholder do zajętego slot');
       } else {
         createChild.parentNode.appendChild(newElement);
         event.target.appendChild(document.getElementById(data));
+        //console.log('przeniesienie kulki z colors do pustego slot');
       }
       return;
     }
 
 
     // przeniesienie kulki z slot do slot
-    if (event.target.classList.contains('ball') &&
+    if (event.target.matches('.ball') &&
         createChild.parentNode.parentNode === over.parentNode.parentNode) {
-      //console.log('slot -> slot');
 
-
-      //event.target.parentNode.appendChild(document.getElementById(data));
-      console.log('t');
       targetParent.removeChild(event.target);
       targetParent.appendChild(document.getElementById(data));
       lastTargetSlot.append(event.target);
+      //console.log('przeniesienie kulki z slot do slot');
+      return;
 
-      /*parent.removeChild(event.target);
-      //lastTargetSlot.append(event.target);
-      parent.appendChild(document.getElementById(data));
-      console.log('b')
-      const newElement = createElement(
-        'div',
-        createChild.className,
-        createChild.id
-      );
-      lastTargetSlot.appendChild(newElement);
-  */
-    return;
+    //} else if (!event.target.classList.contains('ball')
+    //          && createChild.parentNode.parentNode === over.parentNode.parentNode) {
+    //  event.target.appendChild(document.getElementById(data));
+
     // przeniesienie slot do pustego slot
-    } else if (!event.target.classList.contains('ball') && createChild.parentNode.parentNode === over.parentNode.parentNode) {
-      event.target.appendChild(document.getElementById(data));
-      //console.log('slot -> empty slot');
-    // przejście z colors do pustego slota
     } else {
-      /*const newElement = createElement(
-        'div',
-        createChild.className,
-        createChild.id
-      );
-      console.log('else');
-      event.target.appendChild(document.getElementById(data));*/
+      event.target.appendChild(document.getElementById(data))
+      //console.log('przeniesienie slot do pustego slot');
     }
   }
 
