@@ -1,9 +1,6 @@
 const placeholder = document.querySelector('colors');
 let lastTargetSlot;
-let lastBall;
 let createChild;
-let over;
-let dragStart;
 
 function removeNumbers(name) {
   let changedName;
@@ -60,7 +57,6 @@ function onDragStart(event) {
   event.dataTransfer.effectAllowed='move';
   event.dataTransfer.setData("text", event.target.getAttribute('id'));
 
-  // celem jest element w slot
   if (event.target.parentNode.matches('.slot') ||
       event.target.parentNode.matches('.color-slot')) {
     lastTargetSlot = event.target.parentNode;
@@ -71,75 +67,61 @@ function onDragStart(event) {
 
 function onDrop(event) {
   const data = event.dataTransfer.getData("text");
-  let targetParent = event.target.parentNode;
+  const target = event.target;
+  const targetParent = target.parentNode;
 
-  //console.log(createChild);
-
-
-  // ball w to samo miejsce gdzie było
+  // ball places in the same room
   if (lastTargetSlot === targetParent) {
     targetParent.appendChild(document.getElementById(data));
   } else {
 
     if (targetParent.className === 'color-slot') {
 
-      // usunięcie kulki z slot
-      if (removeNumbers(lastTargetSlot.children[0].id) === removeNumbers(event.target.id)) {
+      // remove ball
+      if (removeNumbers(lastTargetSlot.children[0].id) === removeNumbers(target.id)) {
         lastTargetSlot.removeChild(document.getElementById(data))
-        //console.log('usunięcie kulki z slot');
-      } else {
-        // placeholder na placeholder
-        //console.log('placeholder na placeholder lub kulka na placeholder');
       }
 
-      // kulka na placeholder
-      //if (lastTargetSlot.className === 'slot') {
-        //const newElement = createElement(event.target.className, event.target.id);
+      // ball dropped at placeholder
+      //else if (lastTargetSlot.className === 'slot') {
+        //const newElement = createElement(target.className, target.id);
         //lastTargetSlot.removeChild(createChild);
         //lastTargetSlot.appendChild(newElement);
-        ////console.log('kulka na placeholder');        // usunąć tę opcję
         //return;
       //}
       return;
     }
 
-  // przeniesienie kulki z slot do colors
+    // replace ball from slot to placeholder
     if (createChild.parentNode.matches('.color-slot')) {
       const newElement = createElement(createChild.className, createChild.id);
 
-      // zamiana kuli z placeholder do zajętego slot
-      if (event.target.matches('.ball')) {
-        targetParent.removeChild(event.target);
+      // replace ball from placeholder to taken slot
+      if (target.matches('.ball')) {
+        targetParent.removeChild(target);
         targetParent.appendChild(document.getElementById(data));
         lastTargetSlot.appendChild(newElement);
-        //console.log('zamiana kuli z placeholder do zajętego slot');
+
+      // replace ball from placeholder to empty slot
       } else {
         createChild.parentNode.appendChild(newElement);
-        event.target.appendChild(document.getElementById(data));
-        //console.log('przeniesienie kulki z colors do pustego slot');
+        target.appendChild(document.getElementById(data));
       }
       return;
     }
 
 
-    // przeniesienie kulki z slot do slot
-    if (event.target.matches('.ball') &&
+    // replace ball from slot to slot
+    if (target.matches('.ball') &&
         createChild.parentNode.parentNode === over.parentNode.parentNode) {
-
-      targetParent.removeChild(event.target);
+      targetParent.removeChild(target);
       targetParent.appendChild(document.getElementById(data));
-      lastTargetSlot.append(event.target);
-      //console.log('przeniesienie kulki z slot do slot');
+      lastTargetSlot.append(target);
       return;
 
-    //} else if (!event.target.classList.contains('ball')
-    //          && createChild.parentNode.parentNode === over.parentNode.parentNode) {
-    //  event.target.appendChild(document.getElementById(data));
-
-    // przeniesienie slot do pustego slot
+    // replace ball from slot to empty slot
     } else {
-      event.target.appendChild(document.getElementById(data))
-      //console.log('przeniesienie slot do pustego slot');
+      target.appendChild(document.getElementById(data));
     }
   }
 
