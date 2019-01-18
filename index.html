@@ -9,71 +9,80 @@
   </head>
   <body>
 
-    <h1 class="title">
-      <span class="title-left">master</span>
-      <span class="title-right">mind</span>
-    </h1>
+    <header class="header">
+      <h1 class="title">mastermind</h1>
+      <div class="info">i</div>
+    </header>
 
 
     <div class="game">
-      <div class="colors">
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball white" id="white" data-color="white"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
-        </div>
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball red" id="red" data-color="red"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
-        </div>
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball yellow" id="yellow" data-color="yellow"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
-        </div>
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball black" id="black" data-color="black"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
-        </div>
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball blue" id="blue" data-color="blue"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
-        </div>
-        <div class="color-slot"
-             ondrop="return onDrop(event)"
-             ondragover="return onDragOver(event)">
-          <div class="ball green" id="green" data-color="green"
-               draggable="true"
-               ondragstart="return onDragStart(event)"
-               ondragend="return onDragEnd(event)">
-          </div>
+      <div class="results">
+        <p class="text"></p>
+        <div class="computer"></div>
+        <div class="new-game">
+          <button class="button" type="button" id="new-game" name="button">new game</button>
         </div>
       </div>
 
-      <div class="check">
+      <div class="pick-colors">
+        <div class="colors">
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball white" id="white" data-color="white"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball red" id="red" data-color="red"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball yellow" id="yellow" data-color="yellow"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball black" id="black" data-color="black"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball blue" id="blue" data-color="blue"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+          <div class="color-slot"
+               ondrop="return onDrop(event)"
+               ondragover="return onDragOver(event)">
+            <div class="ball green" id="green" data-color="green"
+                 draggable="true"
+                 ondragstart="return onDragStart(event)"
+                 ondragend="return onDragEnd(event)">
+            </div>
+          </div>
+        </div>
+
+        <div class="check">
         <div class="slots">
           <div class="slot"
                ondrop="return onDrop(event)"
@@ -93,14 +102,15 @@
           </div>
         </div>
 
-        <button class="submit-button" id="submit" type="button">check</button>
+        <button class="button" id="submit" type="button">check</button>
+      </div>
       </div>
 
       <div class="checked-colors">
         <div class="labels">
-          <div class="left-label">guesses</div>
+          <p class="left-label">guesses</p>
           <div class="line"></div>
-          <div class="right-label">ratings</div>
+          <p class="right-label">ratings</p>
         </div>
 
 
