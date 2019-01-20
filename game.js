@@ -46,3 +46,43 @@ function createGame(toColor, number) {
 
   return colors;
 }
+
+
+
+// check submit
+
+function checkMatches(player, computerArray) {
+  let allColors = ['white', 'yellow', 'green', 'blue', 'red', 'black'];
+  let helper = [];
+
+  allColors.forEach(color => {
+    if (computer.includes(color)) {
+      let playerIndexes = [];
+      let computerIndexes = [];
+
+      player.map((p, index) => {
+        (p === color) ? playerIndexes.push(index) : false
+      });
+
+      computer.map((c, index) => {
+        (c === color) ? computerIndexes.push(index) : false
+      });
+
+      computerIndexes.forEach(index => {
+
+        if (playerIndexes.includes(index)) {
+            helper.push('black')
+
+        } else if (playerIndexes.length >= computerIndexes.length) {
+          helper.push('gray')
+        }
+      });
+    }
+  })
+
+  return helper;
+}
+
+
+helper = checkMatches(player, computer);
+console.log(helper);
