@@ -1,4 +1,5 @@
 // generate colors
+const submitButton = document.getElementById('submit');
 let player = [];
 let helper = [];
 let computer = createGame(convertToColor, generateRandomNumber);
@@ -86,3 +87,55 @@ function checkMatches(player, computerArray) {
 
 helper = checkMatches(player, computer);
 console.log(helper);
+
+
+
+function createRound(colors, helpers) {
+  let wrapper = document.querySelector('.rounds');
+
+  let round = document.createElement('div');
+  let guesses = document.createElement('div');
+  let ratings = document.createElement('div');
+
+  round.className = 'round';
+  guesses.className = 'guesses';
+  ratings.className = 'ratings';
+
+  wrapper.appendChild(round);
+  round.appendChild(guesses);
+  round.appendChild(ratings);
+
+  colors.forEach(color => {
+    let quess = document.createElement('div');
+    quess.className = `guess-ball ${color}`;
+    guesses.appendChild(quess)
+  });
+
+  helpers.forEach(rating => {
+    let helper = document.createElement('div');
+    helper.className = `helper ${rating}-helper`;
+    ratings.appendChild(helper)
+  });
+}
+
+
+submitButton.addEventListener('click', function(event) {
+  const roundColors = document.querySelectorAll('.check .ball');
+  const labels = document.querySelector('.labels');
+  let wrapper = document.querySelector('.rounds');
+  const line = document.querySelector('.line');
+
+  if (window.getComputedStyle(labels).getPropertyValue('opacity') == 0) {
+    labels.style.setProperty('opacity', 1);
+    labels.style.setProperty('transform', 'none');
+  };
+
+  roundColors.forEach(color => player.push(color.dataset.color));
+  helper = checkMatches(player, computer);
+  helper.sort();
+
+  createRound(player, helper);
+
+  roundColors.forEach(element => element.parentNode.removeChild(element));
+
+}, false);
