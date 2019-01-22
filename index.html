@@ -9,6 +9,8 @@
   </head>
   <body>
 
+    <div class="overlay"></div>
+
     <nav class="nav">
       <!---
       https://codepen.io/nicoencarnacion/pen/XpaRQV?editors=0100
@@ -25,20 +27,14 @@
     </nav>
 
     <header class="header">
-      <h1 class="title">Mastermind
-        <!--<span>master</span>
-        <span>mind</span>-->
-      </h1>
-
+      <h1 class="title">Mastermind</h1>
       <div class="info">
-        <!--<h2>How to play?</h2>-->
-
         <ul>
-          <li>Drag and drop balls to the check zone.</li>
-          <li>Array balls in proper order that you expect computer did.</li>
+          <li>Drag and drop balls into the check zone.</li>
+          <li>Array balls in a proper order that you expect computer did.</li>
           <li>You have 7 attempts to find out the solution.</li>
-          <li>The ratings show you how close you are to solution. Black pin
-            tells that you have got some ball in the right color and room.
+          <li>The ratings show you, how close you are to the solution. Black
+            pin tells you that you have got some ball in the right color and room.
             The gray one appears if some ball has got solely proper color.
             One pin for one ball.</li>
         </ul>
@@ -51,7 +47,6 @@
 
 
     <div class="game">
-
       <div class="example">
         <img class="example-img" src="images/example.jpg" draggable="false" alt="">
       </div>
@@ -123,27 +118,27 @@
         </div>
 
         <div class="check">
-        <div class="slots">
-          <div class="slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
+          <div class="slots">
+            <div class="slot"
+                 ondrop="return onDrop(event)"
+                 ondragover="return onDragOver(event)">
+            </div>
+            <div class="slot"
+                 ondrop="return onDrop(event)"
+                 ondragover="return onDragOver(event)">
+            </div>
+            <div class="slot"
+                 ondrop="return onDrop(event)"
+                 ondragover="return onDragOver(event)">
+            </div>
+            <div class="slot"
+                 ondrop="return onDrop(event)"
+                 ondragover="return onDragOver(event)">
+            </div>
           </div>
-          <div class="slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-          </div>
-          <div class="slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-          </div>
-          <div class="slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-          </div>
-        </div>
 
-        <button class="button" id="submit" type="button">check</button>
-      </div>
+          <button class="button" id="submit" type="button">check</button>
+        </div>
       </div>
 
       <div class="checked-colors">
