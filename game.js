@@ -1,8 +1,12 @@
 // generate colors
 const submitButton = document.getElementById('submit');
+let computer = createGame(convertToColor, generateRandomNumber);
 let player = [];
 let helper = [];
-let computer = createGame(convertToColor, generateRandomNumber);
+let lineWidth = 24;
+
+console.log("computer's order:");
+console.log(computer);
 
 function generateRandomNumber() {
   return Math.floor(Math.random() * 100);
@@ -74,10 +78,26 @@ function checkMatches(player, computerArray) {
         if (playerIndexes.includes(index)) {
             helper.push('black')
 
-        } else if (playerIndexes.length >= computerIndexes.length) {
+        } else if (playerIndexes.length >= computerIndexes.length &&
+                  !playerIndexes.every(index => computerIndexes.includes(index))) {
           helper.push('gray')
+
+        } else if (computerIndexes.length > playerIndexes.length &&
+                   computerIndexes.length >= 1) {
+         return
         }
       });
+
+      playerIndexes.forEach(index => {
+        if (computerIndexes.length > playerIndexes.length &&
+            computerIndexes.length >= 1) {
+          if (computerIndexes.includes(index)) return;
+          helper.push('gray');
+
+        } else {
+          return
+        }
+      })
     }
   })
 
@@ -86,7 +106,6 @@ function checkMatches(player, computerArray) {
 
 
 helper = checkMatches(player, computer);
-console.log(helper);
 
 
 
@@ -125,6 +144,8 @@ submitButton.addEventListener('click', function(event) {
   let wrapper = document.querySelector('.rounds');
   const line = document.querySelector('.line');
 
+  if (roundColors.length < 4) return;
+
   if (window.getComputedStyle(labels).getPropertyValue('opacity') == 0) {
     labels.style.setProperty('opacity', 1);
     labels.style.setProperty('transform', 'none');
@@ -139,3 +160,24 @@ submitButton.addEventListener('click', function(event) {
   roundColors.forEach(element => element.parentNode.removeChild(element));
 
 }, false);
+
+
+
+function gameOver(result) {
+  const results = document.querySelector('.results');
+  const picking = document.querySelector('.pick-colors');
+  const computerColors = results.querySelector('.computer');
+  const text = results.querySelector('.text');
+
+  text.textContent = result == 'won' ? 'You won!' : 'You lost!';
+
+  computer.map(color => {
+    let ball = document.createElement('div');
+    ball.className = `guess-ball ${color}`;
+    computerColors.appendChild(ball);
+  });
+
+  results.style.setProperty('visibility', 'visible');
+  picking.classList.add('gameover');
+  results.classList.add('gameover');
+};
