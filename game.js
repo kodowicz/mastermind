@@ -1,5 +1,6 @@
 // generate colors
 const submitButton = document.getElementById('submit');
+const newGame = document.getElementById('new-game');
 let computer = createGame(convertToColor, generateRandomNumber);
 let player = [];
 let helper = [];
@@ -44,6 +45,19 @@ function convertToColor(randomNumber) {
 
 function createGame(toColor, number) {
   let colors = [];
+
+  /*  only single colors
+  while (colors.length < 4) {
+    let color = toColor(number);
+    console.log(color);
+    if (colors.length >= 1 && colors.includes(color)) {
+      colors.push();
+    } else {
+      colors.push(color);
+    }
+  }
+  */
+
 
   while (colors.length < 4) {
     colors.push(toColor(number));
@@ -146,16 +160,24 @@ submitButton.addEventListener('click', function(event) {
 
   if (roundColors.length < 4) return;
 
-  if (window.getComputedStyle(labels).getPropertyValue('opacity') == 0) {
-    labels.style.setProperty('opacity', 1);
-    labels.style.setProperty('transform', 'none');
-  };
-
   roundColors.forEach(color => player.push(color.dataset.color));
   helper = checkMatches(player, computer);
   helper.sort();
 
   createRound(player, helper);
+
+  lineWidth += 48;
+  line.style.width =  lineWidth + 'px';
+
+  if (player.toString() === computer.toString()) {
+    gameOver('won');
+
+  } else if (wrapper.childElementCount >= 7) {
+    gameOver('lost');
+
+  } else {
+    player = [];
+  }
 
   roundColors.forEach(element => element.parentNode.removeChild(element));
 
@@ -181,3 +203,8 @@ function gameOver(result) {
   picking.classList.add('gameover');
   results.classList.add('gameover');
 };
+
+newGame.addEventListener('click', function() {
+  localStorage.setItem('example', 'hidden');
+  window.location.reload();
+}, false);
