@@ -240,3 +240,6 @@ function onDragOver(event) {
 function onDragEnd(event) {
   lastTargetSlot = null;
 }
+
+
+//localStorage.removeItem('example')
