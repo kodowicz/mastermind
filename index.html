@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/style.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
     <title>Mastermind</title>
   </head>
   <body>
 
     <div class="overlay"></div>
+    <div class="confetti"></div>
 
     <nav class="nav">
       <button class="nav-button" type="button" name="button">
@@ -28,7 +29,7 @@
       <div class="info">
         <ul>
           <li>Drag and drop balls into the check zone.</li>
-          <li>Array balls in a proper order that you expect computer did.</li>
+          <li>Order balls in a proper sequence that you expect computer did.</li>
           <li>You have 7 attempts to find out the solution.</li>
           <li>The ratings show you, how close you are to the solution. Black
             pin tells you that you have got some ball in the right color and room.
@@ -45,7 +46,7 @@
 
     <div class="game">
       <div class="example">
-        <img class="example-img" src="images/example.jpg" draggable="false" alt="">
+        <img class="example-img" src="images/example.jpg" draggable="false" alt="An example of a game">
       </div>
 
       <div class="results">
@@ -70,7 +71,7 @@
           <div class="color-slot"
                ondrop="return onDrop(event)"
                ondragover="return onDragOver(event)">
-            <div class="ball red" id="red" data-color="red"
+            <div class="ball blue" id="blue" data-color="blue"
                  draggable="true"
                  ondragstart="return onDragStart(event)"
                  ondragend="return onDragEnd(event)">
@@ -79,7 +80,7 @@
           <div class="color-slot"
                ondrop="return onDrop(event)"
                ondragover="return onDragOver(event)">
-            <div class="ball yellow" id="yellow" data-color="yellow"
+            <div class="ball green" id="green" data-color="green"
                  draggable="true"
                  ondragstart="return onDragStart(event)"
                  ondragend="return onDragEnd(event)">
@@ -97,7 +98,7 @@
           <div class="color-slot"
                ondrop="return onDrop(event)"
                ondragover="return onDragOver(event)">
-            <div class="ball blue" id="blue" data-color="blue"
+            <div class="ball red" id="red" data-color="red"
                  draggable="true"
                  ondragstart="return onDragStart(event)"
                  ondragend="return onDragEnd(event)">
@@ -106,7 +107,7 @@
           <div class="color-slot"
                ondrop="return onDrop(event)"
                ondragover="return onDragOver(event)">
-            <div class="ball green" id="green" data-color="green"
+            <div class="ball yellow" id="yellow" data-color="yellow"
                  draggable="true"
                  ondragstart="return onDragStart(event)"
                  ondragend="return onDragEnd(event)">
@@ -150,7 +151,7 @@
       </div>
     </div>
 
-    <script src="./js/index.js"></script>
-    <script src="./js/game.js"></script>
+    <script src="https://codepen.io/tbekaert/pen/NMLZjK.js?update"></script>
+    <script src="./scripts/main.js"></script>
   </body>
 </html>
