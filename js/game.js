@@ -1,10 +1,35 @@
 // generate colors
 const submitButton = document.getElementById('submit');
 const newGame = document.getElementById('new-game');
+const confettiBox = document.querySelector('.confetti');
 let computer = createGame(convertToColor, generateRandomNumber);
 let player = [];
 let helper = [];
 let lineWidth = 24;
+
+const config = {
+  angle: "90",
+  spread: 250,  // 360
+  startVelocity: 40,  // 60
+  elementCount: 200,  // 150
+  //dragFriction: 0.09, // 0.82
+  decay: 0.9,
+  duration: 4000,
+  delay: 0,
+  width: "9px",
+  height: "9px",
+  colors: [
+  '#E68F17',
+  '#FAB005',
+  '#FA5252',
+  '#E64980',
+  '#BE4BDB',
+  '#0B7285',
+  '#15AABF',
+  '#EE1233',
+  '#40C057'
+]
+};
 
 console.log("computer's order:");
 console.log(computer);
@@ -171,6 +196,7 @@ submitButton.addEventListener('click', function(event) {
 
   if (player.toString() === computer.toString()) {
     gameOver('won');
+    confetti(confettiBox, config);
 
   } else if (wrapper.childElementCount >= 7) {
     gameOver('lost');
@@ -207,4 +233,5 @@ function gameOver(result) {
 newGame.addEventListener('click', function() {
   localStorage.setItem('example', 'hidden');
   window.location.reload();
+
 }, false);
