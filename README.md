@@ -4,7 +4,7 @@
 Game called **Mastermind**. Drag and drop balls into the check zone.
 Order balls in a proper sequence that you expect computer did.
 You have 7 attempts to find out the solution.
-The ratings show you, how close you are to the solution. Black pin tells you that you have got some ball in the right color and room. The gray one appears if some ball has got solely proper color. One pin for one ball. If you win the confetti appears 🎉
+The ratings show you, how close you are to the solution. Black pin tells you that you have got some ball in the right color and room. The gray one appears if some ball has got solely proper color. One pin for one ball. If you win the confetti appears 🎉 Try your hand at playing this game [here](https://kodowicz.github.io/mastermind)
 
 
 ## Installation
