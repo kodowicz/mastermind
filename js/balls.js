@@ -2,8 +2,6 @@ let lastTargetSlot;
 let createChild;
 let over;
 
-localStorage.removeItem('example');
-
 function removeNumbers(name) {
   let changedName;
   let rex = name.search(/\d/g);

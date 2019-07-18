@@ -146,8 +146,6 @@ function checkMatches(player, computerArray) {
 
 helper = checkMatches(player, computer);
 
-
-
 function createRound(colors, helpers) {
   let wrapper = document.querySelector('.rounds');
 
@@ -174,6 +172,51 @@ function createRound(colors, helpers) {
     helper.className = `helper ${rating}-helper`;
     ratings.appendChild(helper)
   });
+}
+
+function gameOver(result) {
+  const results = document.querySelector('.results');
+  const picking = document.querySelector('.pick-colors');
+  const computerColors = results.querySelector('.computer');
+  const text = results.querySelector('.text');
+
+  text.textContent = result == 'won' ? 'You won!' : 'You lost!';
+
+  computer.map(color => {
+    let ball = document.createElement('div');
+    ball.className = `guess-ball ${color}`;
+    computerColors.appendChild(ball);
+  });
+
+  results.style.setProperty('visibility', 'visible');
+  picking.classList.add('gameover');
+  results.classList.add('gameover');
+};
+
+function resetPreviousGame() {
+  const picking = document.querySelector('.pick-colors');
+  const rounds = document.querySelector('.rounds');
+  const line = document.querySelector('.line');
+  const results = document.querySelector('.results');
+  const text = results.querySelector('.text');
+  const computerColors = results.querySelector('.computer');
+
+  rounds.innerHTML = "";
+  text.innerHTML = "";
+  computerColors.innerHTML = "";
+  line.style.width = 0;
+  lineWidth = 24;
+
+  results.style.setProperty('visibility', 'hidden');
+  picking.classList.remove('gameover');
+  results.classList.remove('gameover');
+
+  computer = createGame(convertToColor, generateRandomNumber);
+
+  console.log("computer's order:");
+  console.log(computer);
+  player = [];
+  helper = checkMatches(player, computer);
 }
 
 
@@ -209,29 +252,6 @@ submitButton.addEventListener('click', function(event) {
 
 }, false);
 
-
-
-function gameOver(result) {
-  const results = document.querySelector('.results');
-  const picking = document.querySelector('.pick-colors');
-  const computerColors = results.querySelector('.computer');
-  const text = results.querySelector('.text');
-
-  text.textContent = result == 'won' ? 'You won!' : 'You lost!';
-
-  computer.map(color => {
-    let ball = document.createElement('div');
-    ball.className = `guess-ball ${color}`;
-    computerColors.appendChild(ball);
-  });
-
-  results.style.setProperty('visibility', 'visible');
-  picking.classList.add('gameover');
-  results.classList.add('gameover');
-};
-
 newGame.addEventListener('click', function() {
-  localStorage.setItem('example', 'hidden');
-  window.location.reload();
-
+  resetPreviousGame();
 }, false);
