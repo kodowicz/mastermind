@@ -3,7 +3,6 @@
 var lastTargetSlot;
 var createChild;
 var over;
-localStorage.removeItem('example');
 
 function removeNumbers(name) {
   var changedName;
@@ -284,6 +283,46 @@ function createRound(colors, helpers) {
   });
 }
 
+function gameOver(result) {
+  var results = document.querySelector('.results');
+  var picking = document.querySelector('.pick-colors');
+  var computerColors = results.querySelector('.computer');
+  var text = results.querySelector('.text');
+  text.textContent = result == 'won' ? 'You won!' : 'You lost!';
+  computer.map(function (color) {
+    var ball = document.createElement('div');
+    ball.className = "guess-ball ".concat(color);
+    computerColors.appendChild(ball);
+  });
+  results.style.setProperty('visibility', 'visible');
+  picking.classList.add('gameover');
+  results.classList.add('gameover');
+}
+
+;
+
+function resetPreviousGame() {
+  var picking = document.querySelector('.pick-colors');
+  var rounds = document.querySelector('.rounds');
+  var line = document.querySelector('.line');
+  var results = document.querySelector('.results');
+  var text = results.querySelector('.text');
+  var computerColors = results.querySelector('.computer');
+  rounds.innerHTML = "";
+  text.innerHTML = "";
+  computerColors.innerHTML = "";
+  line.style.width = 0;
+  lineWidth = 24;
+  results.style.setProperty('visibility', 'hidden');
+  picking.classList.remove('gameover');
+  results.classList.remove('gameover');
+  computer = createGame(convertToColor, generateRandomNumber);
+  console.log("computer's order:");
+  console.log(computer);
+  player = [];
+  helper = checkMatches(player, computer);
+}
+
 submitButton.addEventListener('click', function (event) {
   var roundColors = document.querySelectorAll('.check .ball');
   var labels = document.querySelector('.labels');
@@ -312,27 +351,8 @@ submitButton.addEventListener('click', function (event) {
     return element.parentNode.removeChild(element);
   });
 }, false);
-
-function gameOver(result) {
-  var results = document.querySelector('.results');
-  var picking = document.querySelector('.pick-colors');
-  var computerColors = results.querySelector('.computer');
-  var text = results.querySelector('.text');
-  text.textContent = result == 'won' ? 'You won!' : 'You lost!';
-  computer.map(function (color) {
-    var ball = document.createElement('div');
-    ball.className = "guess-ball ".concat(color);
-    computerColors.appendChild(ball);
-  });
-  results.style.setProperty('visibility', 'visible');
-  picking.classList.add('gameover');
-  results.classList.add('gameover');
-}
-
-;
 newGame.addEventListener('click', function () {
-  localStorage.setItem('example', 'hidden');
-  window.location.reload();
+  resetPreviousGame();
 }, false);
 var navButton = document.querySelector('.nav-button');
 var navButtonText = navButton.querySelector('.nav-button--text');
@@ -343,43 +363,15 @@ var placeholder = document.querySelector('colors');
 var playButton = document.querySelector('.play-button');
 var overlay = document.querySelector('.overlay');
 
-if (localStorage.getItem('display') === 'none') {
-  navButtonText.textContent = 'open';
-  navButton.classList.add('opened');
-  header.style.setProperty('visibility', 'hidden');
-  header.classList.add('hidden');
-  game.classList.add('hidden');
-  example.style.setProperty('display', 'none');
-  window.setTimeout(example.style.setProperty('display', 'none'), 300);
-  game.addEventListener('transitionend', function () {
-    overlay.style.setProperty('display', 'none');
-  }, false);
-} else if (localStorage.getItem('example') === 'hidden') {
-  playButton.style.setProperty('visibility', 'hidden');
-  example.style.setProperty('display', 'none');
-  overlay.style.setProperty('display', 'none');
-} else if (localStorage.getItem('display') !== 'none') {
-  overlay.style.setProperty('display', 'none');
-} // hidden information
-
-
-navButton.addEventListener('click', function () {
+function hideRules() {
   var isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
   navButtonText.textContent = isDisplayed;
-  header.style.setProperty('visibility', 'visible');
   navButton.classList.toggle('opened');
   header.classList.toggle('hidden');
-  game.classList.toggle('hidden');
-  /*window.setTimeout(
-    () => {
-    console.log('hidden')
-    header.style.setProperty('display', isDisplayed == 'close' ? 'block' : 'none')
-    }, 2000
-  );*/
+  game.classList.toggle('hidden'); // if example is visible
 
   if (example.clientHeight > 0) {
-    example.style.setProperty('opacity', '0');
-    window.setTimeout(example.style.setProperty('display', 'none'), 1000);
+    example.classList.add('example-hidden');
     localStorage.setItem('example', 'hidden');
   }
 
@@ -388,27 +380,33 @@ navButton.addEventListener('click', function () {
   } else {
     localStorage.removeItem('display');
   }
-}, false);
-/*header.addEventListener('transitionend', function(event) {
-  const navButtonText = navButton.querySelector('.nav-button--text');
-  let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
+}
 
-  if (event.propertyName !== 'transform') return;
+if (localStorage.getItem('display') === 'none') {
+  navButtonText.textContent = 'open';
+  navButton.classList.add('opened');
+  header.classList.add('hidden');
+  game.classList.add('hidden');
+  example.style.setProperty('display', 'none');
+  window.setTimeout(example.style.setProperty('display', 'none'), 300);
+  game.addEventListener('transitionend', function () {
+    overlay.style.setProperty('display', 'none');
+  }, false);
+} else if (localStorage.getItem('example') === 'hidden') {
+  playButton.classList.add('example-hidden');
+  example.style.setProperty('display', 'none');
+  overlay.style.setProperty('display', 'none');
+} else if (localStorage.getItem('display') !== 'none') {
+  overlay.style.setProperty('display', 'none');
+} // hidden information
 
-  console.log(isDisplayed);
 
-  if (isDisplayed == 'close') {
-    header.style.setProperty('display', 'none');
-  } else {
-    header.style.setProperty('display', 'block');
-  }
+navButton.addEventListener('click', function () {
+  hideRules();
+}, false); // play a game
 
-}, false)*/
-// play a game
-
-var playGame = document.querySelector('.play-button');
-playGame.addEventListener('click', function () {
-  example.style.setProperty('opacity', '0');
-  window.setTimeout(example.style.setProperty('display', 'none'), 1000);
+playButton.addEventListener('click', function () {
+  playButton.classList.add('example-hidden');
+  hideRules();
   localStorage.setItem('example', 'hidden');
 }, false);
