@@ -8,11 +8,33 @@ const playButton = document.querySelector('.play-button');
 const overlay = document.querySelector('.overlay');
 
 
+function hideRules () {
+  let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
+
+  navButtonText.textContent = isDisplayed;
+
+  navButton.classList.toggle('opened');
+  header.classList.toggle('hidden');
+  game.classList.toggle('hidden');
+
+  // if example is visible
+  if (example.clientHeight > 0) {
+    example.classList.add('example-hidden');
+    localStorage.setItem('example', 'hidden')
+  }
+
+
+  if (isDisplayed === 'open') {
+    localStorage.setItem('display', 'none');
+  } else {
+    localStorage.removeItem('display');
+  }
+}
+
 
 if (localStorage.getItem('display') === 'none') {
   navButtonText.textContent = 'open';
   navButton.classList.add('opened');
-  header.style.setProperty('visibility', 'hidden');
   header.classList.add('hidden');
   game.classList.add('hidden');
   example.style.setProperty('display', 'none');
@@ -24,7 +46,7 @@ if (localStorage.getItem('display') === 'none') {
   }, false);
 
 } else if (localStorage.getItem('example') === 'hidden') {
-  playButton.style.setProperty('visibility', 'hidden');
+  playButton.classList.add('example-hidden');
   example.style.setProperty('display', 'none');
   overlay.style.setProperty('display', 'none');
 
@@ -34,66 +56,14 @@ if (localStorage.getItem('display') === 'none') {
 
 
 // hidden information
-
 navButton.addEventListener('click', function () {
-  let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-
-  navButtonText.textContent = isDisplayed;
-
-  header.style.setProperty('visibility', 'visible');
-  navButton.classList.toggle('opened');
-  header.classList.toggle('hidden');
-  game.classList.toggle('hidden');
-
-  /*window.setTimeout(
-    () => {
-    console.log('hidden')
-    header.style.setProperty('display', isDisplayed == 'close' ? 'block' : 'none')
-    }, 2000
-  );*/
-
-  if (example.clientHeight > 0) {
-    example.style.setProperty('opacity', '0');
-    window.setTimeout(example.style.setProperty('display', 'none'), 1000);
-
-    localStorage.setItem('example', 'hidden')
-  }
-
-
-  if (isDisplayed === 'open') {
-    localStorage.setItem('display', 'none');
-  } else {
-    localStorage.removeItem('display');
-  }
-
-
+  hideRules();
 }, false);
 
-
-/*header.addEventListener('transitionend', function(event) {
-  const navButtonText = navButton.querySelector('.nav-button--text');
-  let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-
-  if (event.propertyName !== 'transform') return;
-
-  console.log(isDisplayed);
-
-  if (isDisplayed == 'close') {
-    header.style.setProperty('display', 'none');
-  } else {
-    header.style.setProperty('display', 'block');
-  }
-
-}, false)*/
-
-
 // play a game
+playButton.addEventListener('click', function() {
+  playButton.classList.add('example-hidden');
 
-const playGame = document.querySelector('.play-button');
-
-playGame.addEventListener('click', function() {
-  example.style.setProperty('opacity', '0');
-  window.setTimeout(example.style.setProperty('display', 'none'), 1000);
-
-  localStorage.setItem('example', 'hidden')
+  hideRules();
+  localStorage.setItem('example', 'hidden');
 }, false);
