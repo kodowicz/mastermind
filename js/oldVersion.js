@@ -80,17 +80,8 @@ function onDrop(event) {
 
       // remove ball
       if (removeNumbers(lastTargetSlot.children[0].id) === removeNumbers(target.id)) {
-        console.log(2);
         lastTargetSlot.removeChild(document.getElementById(data))
       }
-
-      // ball dropped at placeholder
-      //else if (lastTargetSlot.className === 'slot') {
-        //const newElement = createElement(target.className, target.id);
-        //lastTargetSlot.removeChild(createChild);
-        //lastTargetSlot.appendChild(newElement);
-        //return;
-      //}
       return;
     }
 
@@ -100,25 +91,21 @@ function onDrop(event) {
 
       // replace ball from placeholder to taken slot
       if (target.matches('.ball')) {
-        console.log(4);
         targetParent.removeChild(target);
         targetParent.appendChild(document.getElementById(data));
         lastTargetSlot.appendChild(newElement);
 
       // replace ball from placeholder to empty slot
       } else {
-        console.log(5);
         createChild.parentNode.appendChild(newElement);
         target.appendChild(document.getElementById(data));
       }
       return;
     }
 
-
     // replace ball from slot to slot
     if (target.matches('.ball') &&
         createChild.parentNode.parentNode === over.parentNode.parentNode) {
-          console.log(6);
       targetParent.removeChild(target);
       targetParent.appendChild(document.getElementById(data));
       lastTargetSlot.append(target);
@@ -126,7 +113,6 @@ function onDrop(event) {
 
     // replace ball from slot to empty slot
   } else {
-    console.log(7);
       target.appendChild(document.getElementById(data));
     }
   }

@@ -1,26 +1,23 @@
 (function initGame(){
   const balls = document.querySelectorAll(".ball");
   const slots = document.querySelectorAll(".slot");
-  const hideElement = document.querySelector('.header');
-  const slideElement = document.querySelector('.game');
-  const navBtnText = document.querySelector('.nav-button--text');
 
   let isMoved = false;
   let ball;
 
 
-  function elementTranslation(element1, element2) {
-    const transition = ((element1.offsetWidth +
-      (((window.innerWidth - element1.offsetWidth - element2.offsetWidth) / 3) * 2) -
-      ((window.innerWidth / 2) - (element2.offsetWidth / 2))) * -1);
+  function elementTranslation(element) {
+    const game = document.querySelector('.game');
+    const style = window.getComputedStyle(game);
+    const matrix = new WebKitCSSMatrix(style.webkitTransform);
 
-    return navBtnText.textContent == 'close' ? 0 : transition;
+    return matrix.m41
   }
 
   function exactPosition(element) {
     let Xposition = 0;
     let Yposition = 0;
-    let translation = elementTranslation(hideElement, slideElement);
+    let translation = elementTranslation();
 
     while (element) {
       if (element.tagName == "body") {
@@ -171,7 +168,7 @@
     if (ball) ballParent = ball.parentNode;
 
 
-    // usunięcie ball z slot
+    // remove slot
     if (colorSlotTargetIndex > -1 ) {
       const colorSlot = colorSlots[colorSlotTargetIndex].firstElementChild.getAttribute("data-color");
       const ballSlot = ballParent.firstElementChild.getAttribute("data-color");
@@ -184,31 +181,31 @@
     /* assign ball */
     if (slotTargetIndex > -1) {
 
-      // gdy slot jest zajęty
+      // if slot is taken
       if (slotTarget.childElementCount === 1) {
         const slotTargetParent = slots[slotTargetIndex].parentNode;
 
-        // slot na ten sam slot
+        // ball placed in the same room
         if (ballParent.matches(".slot") && ball.parentNode == slotTarget) {
           ball.style.transform = "none";
 
-        // zamiana slot na slot
+        // replace ball from slot to slot
         } else if (ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget);
 
-        // zamiana placeholder na slot
+        // replace ball from placeholder to taken slot
         } else if (ballParent.matches(".color-slot")) {
           const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
 
       } else {
-        // zmiana z slot na pusty slot
+        // replace ball from slot to empty slot
         if (ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, null, ballParent, slotTarget);
         }
 
-        // zmiana z placeholder na pusty slot
+        // replace ball from placeholder to empty slot
         else {
           const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
@@ -226,8 +223,9 @@
 
 
   balls.forEach(ball =>
-    ball.addEventListener("mousedown", startMovingBall)
+    ball.addEventListener("mousedown", startMovingBall);
   );
   document.addEventListener("mousemove", keepMovingBall);
   document.addEventListener("mouseup", finishMovingBall);
+
 }());
