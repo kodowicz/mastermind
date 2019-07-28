@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./styles/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
     <title>Mastermind</title>
   </head>
   <body>
@@ -59,80 +59,32 @@
 
       <div class="pick-colors">
         <div class="colors">
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball white" id="white" data-color="white"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball white" id="white" data-color="white"></div>
           </div>
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball blue" id="blue" data-color="blue"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball blue" id="blue" data-color="blue"></div>
           </div>
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball green" id="green" data-color="green"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball green" id="green" data-color="green"></div>
           </div>
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball black" id="black" data-color="black"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball black" id="black" data-color="black"></div>
           </div>
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball red" id="red" data-color="red"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball red" id="red" data-color="red"></div>
           </div>
-          <div class="color-slot"
-               ondrop="return onDrop(event)"
-               ondragover="return onDragOver(event)">
-            <div class="ball yellow" id="yellow" data-color="yellow"
-                 draggable="true"
-                 ondragstart="return onDragStart(event)"
-                 ondragend="return onDragEnd(event)">
-            </div>
+          <div class="color-slot">
+            <div class="ball yellow" id="yellow" data-color="yellow"></div>
           </div>
         </div>
 
         <div class="check">
           <div class="slots">
-            <div class="slot"
-                 ondrop="return onDrop(event)"
-                 ondragover="return onDragOver(event)">
-            </div>
-            <div class="slot"
-                 ondrop="return onDrop(event)"
-                 ondragover="return onDragOver(event)">
-            </div>
-            <div class="slot"
-                 ondrop="return onDrop(event)"
-                 ondragover="return onDragOver(event)">
-            </div>
-            <div class="slot"
-                 ondrop="return onDrop(event)"
-                 ondragover="return onDragOver(event)">
-            </div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
           </div>
 
           <button class="button" id="submit" type="button">check</button>

@@ -28,7 +28,7 @@ function browserReload(done) {
 /* scripts */
 function scripts () {
   return gulp
-    .src(['./js/*.js'])
+    .src(['js/*.js', '!js/oldVersion.js'])
     .pipe(concat('main.js'))
     .pipe(babel({
       presets: ['@babel/env']
