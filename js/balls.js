@@ -1,9 +1,17 @@
 (function initGame(){
   const balls = document.querySelectorAll(".ball");
   const slots = document.querySelectorAll(".slot");
+  const colorSlots = document.querySelectorAll(".color-slot");
 
-  let isMoved = false;
+  let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  ? true : false;
+
   let ball;
+  let ballsPosition;
+  let ballTargetIndex;
+  let ballTarget;
+  let ballParent;
+  let isMoved = false;
 
 
   function elementTranslation(element) {
@@ -57,7 +65,7 @@
     return slotsPosition
   }
 
-  function getSlotTarget(slots, event) {
+  function getTarget(slots, event) {
     let slotTargetIndex;
 
     slots.forEach((slot, index) => {
@@ -139,11 +147,11 @@
     element.className = className;
     element.id = `${idName}${index}`;
     element.setAttribute('data-color', idName);
-    element.addEventListener("mousedown", startMovingBall)
-
+    if (!isMobile) element.addEventListener("mousedown", startMovingBall);
     return element;
   }
 
+  // desktop move ball
   function startMovingBall(event) {
     ball = event.target;
     isMoved = true;
@@ -156,12 +164,11 @@
   }
 
   function finishMovingBall(event) {
-    const colorSlots = document.querySelectorAll(".color-slot");
     const colorSlotsPosition = getSlotPosition(colorSlots);
-    const colorSlotTargetIndex = getSlotTarget(colorSlotsPosition, event);
+    const colorSlotTargetIndex = getTarget(colorSlotsPosition, event);
 
     const slotsPosition = getSlotPosition(slots);
-    const slotTargetIndex = getSlotTarget(slotsPosition, event);
+    const slotTargetIndex = getTarget(slotsPosition, event);
     const slotTarget = slots[slotTargetIndex];
 
     let ballParent;
@@ -184,18 +191,18 @@
       // if slot is taken
       if (slotTarget.childElementCount === 1) {
         const slotTargetParent = slots[slotTargetIndex].parentNode;
+        const newElement = createElement(ball.className, ball.id);
 
         // ball placed in the same room
         if (ballParent.matches(".slot") && ball.parentNode == slotTarget) {
           ball.style.transform = "none";
 
-        // replace ball from slot to slot
+        // replace ball from slot to empty slot
         } else if (ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget);
 
         // replace ball from placeholder to taken slot
         } else if (ballParent.matches(".color-slot")) {
-          const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
 
@@ -207,7 +214,7 @@
 
         // replace ball from placeholder to empty slot
         else {
-          const newElement = createElement(ball.className, ball.id);
+          // const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
       }
@@ -221,11 +228,104 @@
     ball = null;
   }
 
+  // mobile move ball
+  function touchingBall (event) {
+    if (isMoved) {
+      const slots = document.querySelectorAll(".slot");
+      const colorSlots = document.querySelectorAll(".color-slot");
 
-  balls.forEach(ball =>
-    ball.addEventListener("mousedown", startMovingBall);
-  );
-  document.addEventListener("mousemove", keepMovingBall);
-  document.addEventListener("mouseup", finishMovingBall);
+      const colorSlotsPosition = getSlotPosition(colorSlots);
+      const colorSlotTargetIndex = getTarget(colorSlotsPosition, event);
+      const colorSlotTarget = colorSlots[colorSlotTargetIndex];
 
+      const slotsPosition = getSlotPosition(slots);
+      const slotTargetIndex = getTarget(slotsPosition, event);
+      const slotTarget = slots[slotTargetIndex];
+      let slotTargetParent;
+      slotTargetParent = slotTarget ? slotTarget.parentNode : null;
+
+      ballTarget.classList.remove('ball--target');
+
+      if (slotTarget || colorSlotTarget) {
+        if (colorSlotTarget) {
+          // uncklick ball
+          if (ballTarget === event.target) {
+            isMoved = false;
+
+          // remove ball from slot
+          } else if (colorSlotTarget.firstElementChild.getAttribute("data-color") === ballTarget.getAttribute("data-color")) {
+            ballParent.innerHTML = "";
+            isMoved = false;
+
+          // change chosen ball
+          } else if (ballTarget.parentNode.matches(".color-slot") === colorSlotTarget.matches(".color-slot")) {
+            ballTarget = event.target;
+            ballParent = event.target.parentNode;
+            ballTarget.classList.add('ball--target');
+
+          } else {
+            isMoved = false;
+          }
+
+        } else if (ballTarget.parentNode.matches('.slot')) {
+          // replace ball from slot to taken slot
+          if (slotTarget && slotTarget.childElementCount) {
+            assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget);
+            isMoved = false;
+
+          // replace ball from slot to empty slot
+          } else if (slotTarget && !slotTarget.childElementCount) {
+            assignBallToSlot(ballParent, null, ballParent, slotTarget);
+            isMoved = false;
+          }
+
+        // replace ball from slot to placeholder
+        } else if (ballTarget.parentNode.matches('.color-slot')) {
+          const newElement = createElement(ballTarget.className, ballTarget.id);
+
+          // replace ball from placeholder to taken slot
+          if (slotTarget && slotTarget.childElementCount) {
+            ballParent.innerHTML = "";
+            ballParent.appendChild(newElement);
+            slotTarget.innerHTML = "";
+            slotTarget.appendChild(ballTarget);
+            isMoved = false;
+
+          // replace ball from placeholder to empty slot
+          } else if (slotTarget) {
+            ballParent.innerHTML = "";
+            ballParent.appendChild(newElement);
+            slotTarget.appendChild(ballTarget);
+            isMoved = false;
+          }
+        }
+
+      // click outside of picking zone
+      } else {
+        isMoved = false;
+      }
+
+    } else {
+      if (event.target.matches(".ball") || event.target.matches(".ball") && isColorChanged) {
+        const balls = document.querySelectorAll(".ball");
+        ball = event.target;
+        ballsPosition = getSlotPosition(balls);
+        ballTargetIndex = getTarget(ballsPosition, event);
+        ballTarget = balls[ballTargetIndex];
+        ballParent = ballTarget.parentNode;
+
+        ballTarget.classList.add('ball--target');
+        isMoved = true;
+      }
+    }
+  };
+
+
+  if (isMobile) {
+    document.addEventListener("touchstart", touchingBall);
+  } else {
+    balls.forEach(ball => ball.addEventListener("mousedown", startMovingBall));
+    document.addEventListener("mousemove", keepMovingBall);
+    document.addEventListener("mouseup", finishMovingBall);
+  }
 }());

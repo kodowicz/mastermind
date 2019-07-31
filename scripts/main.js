@@ -3,8 +3,14 @@
 (function initGame() {
   var balls = document.querySelectorAll(".ball");
   var slots = document.querySelectorAll(".slot");
-  var isMoved = false;
+  var colorSlots = document.querySelectorAll(".color-slot");
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
   var ball;
+  var ballsPosition;
+  var ballTargetIndex;
+  var ballTarget;
+  var ballParent;
+  var isMoved = false;
 
   function elementTranslation(element) {
     var game = document.querySelector('.game');
@@ -54,7 +60,7 @@
     return slotsPosition;
   }
 
-  function getSlotTarget(slots, event) {
+  function getTarget(slots, event) {
     var slotTargetIndex;
     slots.forEach(function (slot, index) {
       if (event.pageX > slot.left && event.pageX < slot.right && event.pageY > slot.top && event.pageY < slot.bottom) {
@@ -133,9 +139,10 @@
     element.className = className;
     element.id = "".concat(idName).concat(index);
     element.setAttribute('data-color', idName);
-    element.addEventListener("mousedown", startMovingBall);
+    if (!isMobile) element.addEventListener("mousedown", startMovingBall);
     return element;
-  }
+  } // desktop move ball
+
 
   function startMovingBall(event) {
     ball = event.target;
@@ -149,11 +156,10 @@
   }
 
   function finishMovingBall(event) {
-    var colorSlots = document.querySelectorAll(".color-slot");
     var colorSlotsPosition = getSlotPosition(colorSlots);
-    var colorSlotTargetIndex = getSlotTarget(colorSlotsPosition, event);
+    var colorSlotTargetIndex = getTarget(colorSlotsPosition, event);
     var slotsPosition = getSlotPosition(slots);
-    var slotTargetIndex = getSlotTarget(slotsPosition, event);
+    var slotTargetIndex = getTarget(slotsPosition, event);
     var slotTarget = slots[slotTargetIndex];
     var ballParent;
     if (ball) ballParent = ball.parentNode; // remove slot
@@ -172,15 +178,17 @@
     if (slotTargetIndex > -1) {
       // if slot is taken
       if (slotTarget.childElementCount === 1) {
-        var slotTargetParent = slots[slotTargetIndex].parentNode; // ball placed in the same room
+        var slotTargetParent = slots[slotTargetIndex].parentNode;
+
+        var _newElement = createElement(ball.className, ball.id); // ball placed in the same room
+
 
         if (ballParent.matches(".slot") && ball.parentNode == slotTarget) {
-          ball.style.transform = "none"; // replace ball from slot to slot
+          ball.style.transform = "none"; // replace ball from slot to empty slot
         } else if (ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget); // replace ball from placeholder to taken slot
         } else if (ballParent.matches(".color-slot")) {
-          var newElement = createElement(ball.className, ball.id);
-          assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
+          assignBallToSlot(slotTarget, _newElement, ballParent, slotTarget);
         }
       } else {
         // replace ball from slot to empty slot
@@ -188,9 +196,8 @@
           assignBallToSlot(ballParent, null, ballParent, slotTarget);
         } // replace ball from placeholder to empty slot
         else {
-            var _newElement = createElement(ball.className, ball.id);
-
-            assignBallToSlot(slotTarget, _newElement, ballParent, slotTarget);
+            // const newElement = createElement(ball.className, ball.id);
+            assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
           }
       }
     } else if (ball) {
@@ -200,16 +207,97 @@
     isMoved = false;
     lastTargetSlot = null;
     ball = null;
+  } // mobile move ball
+
+
+  function touchingBall(event) {
+    if (isMoved) {
+      var _slots = document.querySelectorAll(".slot");
+
+      var _colorSlots = document.querySelectorAll(".color-slot");
+
+      var colorSlotsPosition = getSlotPosition(_colorSlots);
+      var colorSlotTargetIndex = getTarget(colorSlotsPosition, event);
+      var colorSlotTarget = _colorSlots[colorSlotTargetIndex];
+      var slotsPosition = getSlotPosition(_slots);
+      var slotTargetIndex = getTarget(slotsPosition, event);
+      var slotTarget = _slots[slotTargetIndex];
+      var slotTargetParent;
+      slotTargetParent = slotTarget ? slotTarget.parentNode : null;
+      ballTarget.classList.remove('ball--target');
+
+      if (slotTarget || colorSlotTarget) {
+        if (colorSlotTarget) {
+          // uncklick ball
+          if (ballTarget === event.target) {
+            isMoved = false; // remove ball from slot
+          } else if (colorSlotTarget.firstElementChild.getAttribute("data-color") === ballTarget.getAttribute("data-color")) {
+            ballParent.innerHTML = "";
+            isMoved = false; // change chosen ball
+          } else if (ballTarget.parentNode.matches(".color-slot") === colorSlotTarget.matches(".color-slot")) {
+            ballTarget = event.target;
+            ballParent = event.target.parentNode;
+            ballTarget.classList.add('ball--target');
+          } else {
+            isMoved = false;
+          }
+        } else if (ballTarget.parentNode.matches('.slot')) {
+          // replace ball from slot to taken slot
+          if (slotTarget && slotTarget.childElementCount) {
+            assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget);
+            isMoved = false; // replace ball from slot to empty slot
+          } else if (slotTarget && !slotTarget.childElementCount) {
+            assignBallToSlot(ballParent, null, ballParent, slotTarget);
+            isMoved = false;
+          } // replace ball from slot to placeholder
+
+        } else if (ballTarget.parentNode.matches('.color-slot')) {
+          var _newElement2 = createElement(ballTarget.className, ballTarget.id); // replace ball from placeholder to taken slot
+
+
+          if (slotTarget && slotTarget.childElementCount) {
+            ballParent.innerHTML = "";
+            ballParent.appendChild(_newElement2);
+            slotTarget.innerHTML = "";
+            slotTarget.appendChild(ballTarget);
+            isMoved = false; // replace ball from placeholder to empty slot
+          } else if (slotTarget) {
+            ballParent.innerHTML = "";
+            ballParent.appendChild(_newElement2);
+            slotTarget.appendChild(ballTarget);
+            isMoved = false;
+          }
+        } // click outside of picking zone
+
+      } else {
+        isMoved = false;
+      }
+    } else {
+      if (event.target.matches(".ball") || event.target.matches(".ball") && isColorChanged) {
+        var _balls = document.querySelectorAll(".ball");
+
+        ball = event.target;
+        ballsPosition = getSlotPosition(_balls);
+        ballTargetIndex = getTarget(ballsPosition, event);
+        ballTarget = _balls[ballTargetIndex];
+        ballParent = ballTarget.parentNode;
+        ballTarget.classList.add('ball--target');
+        isMoved = true;
+      }
+    }
   }
 
-  balls.forEach(function (ball) {
-    ball.addEventListener("mousedown", startMovingBall); // only for mobiles
+  ;
 
-    ball.addEventListener('click', startMovingBall);
-    ball.addEventListener('dblclick', finishMovingBall);
-  });
-  document.addEventListener("mousemove", keepMovingBall);
-  document.addEventListener("mouseup", finishMovingBall);
+  if (isMobile) {
+    document.addEventListener("touchstart", touchingBall);
+  } else {
+    balls.forEach(function (ball) {
+      return ball.addEventListener("mousedown", startMovingBall);
+    });
+    document.addEventListener("mousemove", keepMovingBall);
+    document.addEventListener("mouseup", finishMovingBall);
+  }
 })();
 
 (function initPlay() {
@@ -442,8 +530,7 @@
   var game = document.querySelector('.game');
   var example = document.querySelector('.example');
   var placeholder = document.querySelector('colors');
-  var playButton = document.querySelector('.play-button');
-  var overlay = document.querySelector('.overlay');
+  var playButton = document.querySelector('.play-button'); // const overlay = document.querySelector('.overlay');
 
   function hideRules() {
     var isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
@@ -475,21 +562,16 @@
     navButton.classList.add('opened');
     header.classList.add('hidden');
     game.classList.add('game-hidden');
-    example.style.setProperty('display', 'none');
-    window.setTimeout(example.style.setProperty('display', 'none'), 300);
-    game.addEventListener('transitionend', function () {
-      overlay.style.setProperty('display', 'none');
-    }, false);
+    example.style.setProperty('display', 'none'); // window.setTimeout(example.style.setProperty('display', 'none'), 300);
+    // game.addEventListener('transitionend', function() {
+    //   overlay.style.setProperty('display', 'none');
+    // }, false);
   } else if (localStorage.getItem('example') === 'hidden') {
     playButton.classList.add('example-hidden');
-    example.style.setProperty('display', 'none');
-    overlay.style.setProperty('display', 'none');
-  } else if (localStorage.getItem('display') !== 'none') {
-    overlay.style.setProperty('display', 'none');
-  } //   layout = document.querySelector('.game-hidden');
-  // }
-  // handleLocalStorage();
-  // hidden information
+    example.style.setProperty('display', 'none'); // overlay.style.setProperty('display', 'none');
+    // } else if (localStorage.getItem('display') !== 'none') {
+    //   overlay.style.setProperty('display', 'none');
+  } // hidden information
 
 
   navButton.addEventListener('click', function () {
