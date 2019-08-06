@@ -214,7 +214,7 @@
 
         // replace ball from placeholder to empty slot
         else {
-          // const newElement = createElement(ball.className, ball.id);
+          const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
       }

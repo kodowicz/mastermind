@@ -179,16 +179,14 @@
       // if slot is taken
       if (slotTarget.childElementCount === 1) {
         var slotTargetParent = slots[slotTargetIndex].parentNode;
-
-        var _newElement = createElement(ball.className, ball.id); // ball placed in the same room
-
+        var newElement = createElement(ball.className, ball.id); // ball placed in the same room
 
         if (ballParent.matches(".slot") && ball.parentNode == slotTarget) {
           ball.style.transform = "none"; // replace ball from slot to empty slot
         } else if (ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, slotTarget.lastChild, ballParent, slotTarget); // replace ball from placeholder to taken slot
         } else if (ballParent.matches(".color-slot")) {
-          assignBallToSlot(slotTarget, _newElement, ballParent, slotTarget);
+          assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
       } else {
         // replace ball from slot to empty slot
@@ -196,8 +194,9 @@
           assignBallToSlot(ballParent, null, ballParent, slotTarget);
         } // replace ball from placeholder to empty slot
         else {
-            // const newElement = createElement(ball.className, ball.id);
-            assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
+            var _newElement = createElement(ball.className, ball.id);
+
+            assignBallToSlot(slotTarget, _newElement, ballParent, slotTarget);
           }
       }
     } else if (ball) {
@@ -252,18 +251,17 @@
           } // replace ball from slot to placeholder
 
         } else if (ballTarget.parentNode.matches('.color-slot')) {
-          var _newElement2 = createElement(ballTarget.className, ballTarget.id); // replace ball from placeholder to taken slot
-
+          var newElement = createElement(ballTarget.className, ballTarget.id); // replace ball from placeholder to taken slot
 
           if (slotTarget && slotTarget.childElementCount) {
             ballParent.innerHTML = "";
-            ballParent.appendChild(_newElement2);
+            ballParent.appendChild(newElement);
             slotTarget.innerHTML = "";
             slotTarget.appendChild(ballTarget);
             isMoved = false; // replace ball from placeholder to empty slot
           } else if (slotTarget) {
             ballParent.innerHTML = "";
-            ballParent.appendChild(_newElement2);
+            ballParent.appendChild(newElement);
             slotTarget.appendChild(ballTarget);
             isMoved = false;
           }
@@ -324,8 +322,9 @@
     width: "9px",
     height: "9px",
     colors: ['#E68F17', '#FAB005', '#FA5252', '#E64980', '#BE4BDB', '#0B7285', '#15AABF', '#EE1233', '#40C057']
-  }; // console.log("computer's order:");
-  // console.log(computer);
+  };
+  console.log("computer's order:");
+  console.log(computer);
 
   function generateRandomNumber() {
     return Math.floor(Math.random() * 100);
@@ -337,7 +336,7 @@
 
     switch (true) {
       case number <= 17:
-        color = 'white';
+        color = 'orange';
         break;
 
       case number > 17 && number <= 33:
@@ -357,7 +356,7 @@
         break;
 
       case number > 83 && number <= 100:
-        color = 'black';
+        color = 'purple';
         break;
 
       default:
@@ -391,7 +390,7 @@
 
 
   function checkMatches(player, computerArray) {
-    var allColors = ['white', 'yellow', 'green', 'blue', 'red', 'black'];
+    var allColors = ['orange', 'yellow', 'green', 'blue', 'red', 'purple'];
     var helper = [];
     allColors.forEach(function (color) {
       if (computer.includes(color)) {
@@ -456,8 +455,8 @@
     var results = document.querySelector('.results');
     var picking = document.querySelector('.pick-colors');
     var computerColors = results.querySelector('.computer');
-    var text = results.querySelector('.text');
-    text.textContent = result == 'won' ? 'You won!' : 'You lost!';
+    var statement = results.querySelector('.statement');
+    statement.textContent = result == 'won' ? 'You won!' : 'You lost!';
     computer.map(function (color) {
       var ball = document.createElement('div');
       ball.className = "guess-ball ".concat(color);
@@ -473,10 +472,10 @@
     var rounds = document.querySelector('.rounds');
     var line = document.querySelector('.line');
     var results = document.querySelector('.results');
-    var text = results.querySelector('.text');
+    var statement = results.querySelector('.statement');
     var computerColors = results.querySelector('.computer');
     rounds.innerHTML = "";
-    text.innerHTML = "";
+    statement.innerHTML = "";
     computerColors.innerHTML = "";
     line.style.width = 0;
     lineWidth = 24;
@@ -491,10 +490,12 @@
   }
 
   submitButton.addEventListener('click', function (event) {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
     var roundColors = document.querySelectorAll('.check .ball');
     var labels = document.querySelector('.labels');
     var wrapper = document.querySelector('.rounds');
     var line = document.querySelector('.line');
+    var increaseWidth = isMobile ? 40 : 48;
     if (roundColors.length < 4) return;
     roundColors.forEach(function (color) {
       return player.push(color.dataset.color);
@@ -502,7 +503,7 @@
     helper = checkMatches(player, computer);
     helper.sort();
     createRound(player, helper);
-    lineWidth += 48;
+    lineWidth += increaseWidth;
     line.style.width = lineWidth + 'px';
 
     if (player.toString() === computer.toString()) {
@@ -524,6 +525,7 @@
 })();
 
 (function initApp() {
+  var body = document.getElementsByTagName('body')[0];
   var navButton = document.querySelector('.nav-button');
   var navButtonText = navButton.querySelector('.nav-button--text');
   var header = document.querySelector('.header');
@@ -532,12 +534,24 @@
   var placeholder = document.querySelector('colors');
   var playButton = document.querySelector('.play-button'); // const overlay = document.querySelector('.overlay');
 
+  var confetti = document.querySelector('.confetti');
+
   function hideRules() {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
     var isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-    navButtonText.textContent = isDisplayed;
+
+    if (isMobile) {
+      body.classList.toggle('body--is-mobile');
+      navButton.classList.toggle('nav--is-mobile');
+      navButtonText.textContent = "";
+    } else {
+      navButtonText.textContent = isDisplayed;
+    }
+
     navButton.classList.toggle('opened');
     header.classList.toggle('hidden');
-    game.classList.toggle('game-hidden'); // game.style.transform = navButtonText.textContent == 'close' ?
+    game.classList.toggle('game-hidden');
+    confetti.classList.toggle('confetti--hidden'); // game.style.transform = navButtonText.textContent == 'close' ?
     // 'none'
     // :
     // 'translateX(calc((550px + (((100vw - 550px - 370px)/3)*2) - ((100vw / 2) - (370px / 2))) * -1))';
@@ -546,31 +560,44 @@
     if (example.clientHeight > 0) {
       example.classList.add('example-hidden');
       localStorage.setItem('example', 'hidden');
-    }
+    } // if (isDisplayed === 'open') {
 
-    if (isDisplayed === 'open') {
+
+    if (navButton.classList.contains("opened")) {
       localStorage.setItem('display', 'none');
     } else {
       localStorage.removeItem('display');
     }
-  } // TODO: is it needed?
-  // function handleLocalStorage() {
+  }
 
+  function handleLocalStorage() {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
 
-  if (localStorage.getItem('display') === 'none') {
-    navButtonText.textContent = 'open';
-    navButton.classList.add('opened');
-    header.classList.add('hidden');
-    game.classList.add('game-hidden');
-    example.style.setProperty('display', 'none'); // window.setTimeout(example.style.setProperty('display', 'none'), 300);
-    // game.addEventListener('transitionend', function() {
-    //   overlay.style.setProperty('display', 'none');
-    // }, false);
-  } else if (localStorage.getItem('example') === 'hidden') {
-    playButton.classList.add('example-hidden');
-    example.style.setProperty('display', 'none'); // overlay.style.setProperty('display', 'none');
-    // } else if (localStorage.getItem('display') !== 'none') {
-    //   overlay.style.setProperty('display', 'none');
+    if (!localStorage.getItem('display') && isMobile) {
+      navButtonText.textContent = "";
+    } else if (localStorage.getItem('display') === 'none') {
+      if (isMobile) {
+        body.classList.add('body--is-mobile');
+        navButton.classList.add('nav--is-mobile');
+        navButtonText.textContent = "";
+      } else {
+        navButtonText.textContent = "open";
+      }
+
+      navButton.classList.add('opened');
+      header.classList.add('hidden');
+      game.classList.add('game-hidden');
+      confetti.classList.add('confetti--hidden');
+      example.style.setProperty('display', 'none'); // window.setTimeout(example.style.setProperty('display', 'none'), 300);
+      // game.addEventListener('transitionend', function() {
+      //   overlay.style.setProperty('display', 'none');
+      // }, false);
+    } else if (localStorage.getItem('example') === 'hidden') {
+      playButton.classList.add('example-hidden');
+      example.style.setProperty('display', 'none'); // overlay.style.setProperty('display', 'none');
+      // } else if (localStorage.getItem('display') !== 'none') {
+      //   overlay.style.setProperty('display', 'none');
+    }
   } // hidden information
 
 
@@ -583,4 +610,5 @@
     hideRules();
     localStorage.setItem('example', 'hidden');
   }, false);
+  handleLocalStorage();
 })();
