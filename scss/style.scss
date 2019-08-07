@@ -80,8 +80,9 @@ body {
   width: 10px;
   height: 10px;
   position: absolute;
-  top: 40%;
-  left: 50%
+  bottom: 20%;
+  z-index: 1;
+  left: 45%;
 }
 
 .overlay {
@@ -92,6 +93,20 @@ body {
   height: 100%;
   background-color: $background;
   z-index: 3
+}
+
+@media (min-width: 768px) {
+  .confetti {
+    bottom: 60%;
+    left: 0;
+    z-index: 0;
+    transform: translateX(calc((((100vw - 550px - 370px)/3)*2) + (370px / 2) + 550px))
+  }
+
+  .confetti.confetti--hidden {
+    left: 50%;
+    transform: none
+  }
 }
 
 
@@ -422,6 +437,12 @@ li {
   margin: 0 auto;
 }
 
+@media (min-width: 350px) {
+  .computer {
+    width: calc(37px * 4 + 5px * 3);
+  }
+}
+
 @media (min-width: 768px) {
   .game {
     display: block;
@@ -440,10 +461,6 @@ li {
   .statement {
     font-size: 2.5rem;
     margin: 1.2rem 0;
-  }
-
-  .computer {
-    width: 45%;
   }
 }
 

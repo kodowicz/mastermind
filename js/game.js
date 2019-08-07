@@ -8,28 +8,35 @@
   let helper = [];
   let lineWidth = 24;
 
-  const config = {
+  let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  ? true : false;
+
+  const colors =  ['#E68F17', '#FAB005', '#FA5252', '#0B7285', '#15AABF', '#EE1233', '#40C057'];
+
+  const desktopConfetti = {
     angle: "90",
-    spread: 250,  // 360
-    startVelocity: 40,  // 60
-    elementCount: 200,  // 150
-    //dragFriction: 0.09, // 0.82
+    spread: 250,
+    startVelocity: 40,
+    elementCount: 200,
     decay: 0.9,
     duration: 4000,
     delay: 0,
     width: "9px",
     height: "9px",
-    colors: [
-    '#E68F17',
-    '#FAB005',
-    '#FA5252',
-    '#E64980',
-    '#BE4BDB',
-    '#0B7285',
-    '#15AABF',
-    '#EE1233',
-    '#40C057'
-  ]
+    colors
+  };
+
+  const mobileConfetti = {
+    angle: "90",
+    spread: 200,
+    startVelocity: 50,
+    elementCount: 200,
+    decay: 0.9,
+    duration: 4000,
+    delay: 0,
+    width: "9px",
+    height: "9px",
+    colors
   };
 
   console.log("computer's order:");
@@ -222,9 +229,6 @@
 
 
   submitButton.addEventListener('click', function(event) {
-    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-    ? true : false;
-
     const roundColors = document.querySelectorAll('.check .ball');
     const labels = document.querySelector('.labels');
     let wrapper = document.querySelector('.rounds');
@@ -243,6 +247,7 @@
     line.style.width =  lineWidth + 'px';
 
     if (player.toString() === computer.toString()) {
+      const config = isMobile ? mobileConfetti : desktopConfetti;
       gameOver('won');
       confetti(confettiBox, config);
 
