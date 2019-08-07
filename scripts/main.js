@@ -62,8 +62,10 @@
 
   function getTarget(slots, event) {
     var slotTargetIndex;
+    var offsetX = isMobile ? event.targetTouches[0].pageX : event.pageX;
+    var offsetY = isMobile ? event.targetTouches[0].pageY : event.pageY;
     slots.forEach(function (slot, index) {
-      if (event.pageX > slot.left && event.pageX < slot.right && event.pageY > slot.top && event.pageY < slot.bottom) {
+      if (offsetX > slot.left && offsetX < slot.right && offsetY > slot.top && offsetY < slot.bottom) {
         slotTargetIndex = index;
       }
     });
@@ -271,7 +273,8 @@
         isMoved = false;
       }
     } else {
-      if (event.target.matches(".ball") || event.target.matches(".ball") && isColorChanged) {
+      if (event.target.matches(".ball")) {
+        // new list of balls
         var _balls = document.querySelectorAll(".ball");
 
         ball = event.target;
@@ -301,27 +304,38 @@
 (function initPlay() {
   // generate colors
   var submitButton = document.getElementById('submit');
+  var playButton = document.querySelector('.play-button');
   var newGame = document.getElementById('new-game');
   var confettiBox = document.querySelector('.confetti');
   var computer = createGame(convertToColor, generateRandomNumber);
   var player = [];
-  var helper = [];
+  var helper = checkMatches(player, computer);
   var lineWidth = 24;
-  var config = {
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
+  var colors = ["#E68F17", "#FAB005", "#FA5252", "#0B7285", "#15AABF", "#EE1233", "#40C057"];
+  var desktopConfetti = {
     angle: "90",
     spread: 250,
-    // 360
     startVelocity: 40,
-    // 60
     elementCount: 200,
-    // 150
-    //dragFriction: 0.09, // 0.82
     decay: 0.9,
     duration: 4000,
     delay: 0,
     width: "9px",
     height: "9px",
-    colors: ['#E68F17', '#FAB005', '#FA5252', '#E64980', '#BE4BDB', '#0B7285', '#15AABF', '#EE1233', '#40C057']
+    colors: colors
+  };
+  var mobileConfetti = {
+    angle: "90",
+    spread: 200,
+    startVelocity: 50,
+    elementCount: 200,
+    decay: 0.9,
+    duration: 4000,
+    delay: 0,
+    width: "9px",
+    height: "9px",
+    colors: colors
   };
   console.log("computer's order:");
   console.log(computer);
@@ -426,8 +440,6 @@
     return helper;
   }
 
-  helper = checkMatches(player, computer);
-
   function createRound(colors, helpers) {
     var wrapper = document.querySelector('.rounds');
     var round = document.createElement('div');
@@ -451,6 +463,37 @@
     });
   }
 
+  function submitCheck(event) {
+    var roundColors = document.querySelectorAll('.check .ball');
+    var labels = document.querySelector('.labels');
+    var wrapper = document.querySelector('.rounds');
+    var line = document.querySelector('.line');
+    var increaseWidth = isMobile ? 40 : 48;
+    if (roundColors.length < 4) return;
+    roundColors.forEach(function (color) {
+      return player.push(color.dataset.color);
+    });
+    helper = checkMatches(player, computer);
+    helper.sort();
+    createRound(player, helper);
+    lineWidth += increaseWidth;
+    line.style.width = lineWidth + 'px';
+
+    if (player.toString() === computer.toString()) {
+      var config = isMobile ? mobileConfetti : desktopConfetti;
+      gameOver('won');
+      confetti(confettiBox, config);
+    } else if (wrapper.childElementCount >= 7) {
+      gameOver('lost');
+    } else {
+      player = [];
+    }
+
+    roundColors.forEach(function (element) {
+      return element.parentNode.removeChild(element);
+    });
+  }
+
   function gameOver(result) {
     var results = document.querySelector('.results');
     var picking = document.querySelector('.pick-colors');
@@ -469,6 +512,7 @@
 
   function resetPreviousGame() {
     var picking = document.querySelector('.pick-colors');
+    var slots = document.querySelectorAll('.slot');
     var rounds = document.querySelector('.rounds');
     var line = document.querySelector('.line');
     var results = document.querySelector('.results');
@@ -479,6 +523,9 @@
     computerColors.innerHTML = "";
     line.style.width = 0;
     lineWidth = 24;
+    slots.forEach(function (slot) {
+      return slot.innerHTML = "";
+    });
     results.style.setProperty('visibility', 'hidden');
     picking.classList.remove('gameover');
     results.classList.remove('gameover');
@@ -489,39 +536,9 @@
     helper = checkMatches(player, computer);
   }
 
-  submitButton.addEventListener('click', function (event) {
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
-    var roundColors = document.querySelectorAll('.check .ball');
-    var labels = document.querySelector('.labels');
-    var wrapper = document.querySelector('.rounds');
-    var line = document.querySelector('.line');
-    var increaseWidth = isMobile ? 40 : 48;
-    if (roundColors.length < 4) return;
-    roundColors.forEach(function (color) {
-      return player.push(color.dataset.color);
-    });
-    helper = checkMatches(player, computer);
-    helper.sort();
-    createRound(player, helper);
-    lineWidth += increaseWidth;
-    line.style.width = lineWidth + 'px';
-
-    if (player.toString() === computer.toString()) {
-      gameOver('won');
-      confetti(confettiBox, config);
-    } else if (wrapper.childElementCount >= 7) {
-      gameOver('lost');
-    } else {
-      player = [];
-    }
-
-    roundColors.forEach(function (element) {
-      return element.parentNode.removeChild(element);
-    });
-  }, false);
-  newGame.addEventListener('click', function () {
-    resetPreviousGame();
-  }, false);
+  submitButton.addEventListener('click', submitCheck);
+  newGame.addEventListener('click', resetPreviousGame);
+  playButton.addEventListener('click', resetPreviousGame);
 })();
 
 (function initApp() {
@@ -531,13 +548,12 @@
   var header = document.querySelector('.header');
   var game = document.querySelector('.game');
   var example = document.querySelector('.example');
-  var placeholder = document.querySelector('colors');
-  var playButton = document.querySelector('.play-button'); // const overlay = document.querySelector('.overlay');
-
+  var playButton = document.querySelector('.play-button');
+  var overlay = document.querySelector('.overlay');
   var confetti = document.querySelector('.confetti');
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
 
   function hideRules() {
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
     var isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
 
     if (isMobile) {
@@ -551,16 +567,12 @@
     navButton.classList.toggle('opened');
     header.classList.toggle('hidden');
     game.classList.toggle('game-hidden');
-    confetti.classList.toggle('confetti--hidden'); // game.style.transform = navButtonText.textContent == 'close' ?
-    // 'none'
-    // :
-    // 'translateX(calc((550px + (((100vw - 550px - 370px)/3)*2) - ((100vw / 2) - (370px / 2))) * -1))';
-    // if example is visible
+    confetti.classList.toggle('confetti--hidden'); // if example is visible
 
     if (example.clientHeight > 0) {
       example.classList.add('example-hidden');
       localStorage.setItem('example', 'hidden');
-    } // if (isDisplayed === 'open') {
+    } // if header is visible
 
 
     if (navButton.classList.contains("opened")) {
@@ -571,44 +583,54 @@
   }
 
   function handleLocalStorage() {
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
-
-    if (!localStorage.getItem('display') && isMobile) {
-      navButtonText.textContent = "";
-    } else if (localStorage.getItem('display') === 'none') {
-      if (isMobile) {
+    if (isMobile) {
+      if (localStorage.getItem('display')) {
         body.classList.add('body--is-mobile');
-        navButton.classList.add('nav--is-mobile');
+        navButton.classList.add('opened');
         navButtonText.textContent = "";
+        header.classList.add('hidden');
+        game.classList.add('game-hidden');
+        confetti.classList.add('confetti--hidden');
+        example.style.setProperty('display', 'none');
+        overlay.classList.add('overlay--hidden');
       } else {
-        navButtonText.textContent = "open";
+        navButton.classList.add('nav--hidden');
+        navButton.addEventListener('transitionend', function () {
+          navButtonText.textContent = "";
+          overlay.classList.add('overlay--hidden');
+        });
       }
+    } else {
+      if (localStorage.getItem('display')) {
+        navButtonText.textContent = "open";
+        navButton.classList.add('opened');
+        header.classList.add('hidden');
+        game.classList.add('game-hidden');
+        confetti.classList.add('confetti--hidden');
+        example.style.setProperty('display', 'none');
+        game.addEventListener('transitionend', function () {
+          overlay.classList.add('overlay--hidden');
+        });
+      } else if (!localStorage.getItem('display')) {
+        navButtonText.textContent = "close";
+        navButton.classList.remove('opened');
+        overlay.classList.add('overlay--hidden');
 
-      navButton.classList.add('opened');
-      header.classList.add('hidden');
-      game.classList.add('game-hidden');
-      confetti.classList.add('confetti--hidden');
-      example.style.setProperty('display', 'none'); // window.setTimeout(example.style.setProperty('display', 'none'), 300);
-      // game.addEventListener('transitionend', function() {
-      //   overlay.style.setProperty('display', 'none');
-      // }, false);
-    } else if (localStorage.getItem('example') === 'hidden') {
-      playButton.classList.add('example-hidden');
-      example.style.setProperty('display', 'none'); // overlay.style.setProperty('display', 'none');
-      // } else if (localStorage.getItem('display') !== 'none') {
-      //   overlay.style.setProperty('display', 'none');
+        if (localStorage.getItem('example')) {
+          example.style.setProperty('display', 'none');
+        }
+      }
     }
   } // hidden information
 
 
   navButton.addEventListener('click', function () {
     hideRules();
-  }, false); // play a game
+  }); // play a game
 
   playButton.addEventListener('click', function () {
-    playButton.classList.add('example-hidden');
     hideRules();
     localStorage.setItem('example', 'hidden');
-  }, false);
+  });
   handleLocalStorage();
 })();
