@@ -1,17 +1,18 @@
 (function initPlay(){
   // generate colors
   const submitButton = document.getElementById('submit');
+  const playButton = document.querySelector('.play-button');
   const newGame = document.getElementById('new-game');
   const confettiBox = document.querySelector('.confetti');
   let computer = createGame(convertToColor, generateRandomNumber);
   let player = [];
-  let helper = [];
+  let helper = checkMatches(player, computer);
   let lineWidth = 24;
 
   let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  ? true : false;
+                 ? true : false;
 
-  const colors =  ['#E68F17', '#FAB005', '#FA5252', '#0B7285', '#15AABF', '#EE1233', '#40C057'];
+  const colors =  ["#E68F17", "#FAB005", "#FA5252", "#0B7285", "#15AABF", "#EE1233", "#40C057"];
 
   const desktopConfetti = {
     angle: "90",
@@ -151,9 +152,6 @@
     return helper;
   }
 
-
-  helper = checkMatches(player, computer);
-
   function createRound(colors, helpers) {
     let wrapper = document.querySelector('.rounds');
 
@@ -182,53 +180,7 @@
     });
   }
 
-  function gameOver(result) {
-    const results = document.querySelector('.results');
-    const picking = document.querySelector('.pick-colors');
-    const computerColors = results.querySelector('.computer');
-    const statement = results.querySelector('.statement');
-
-    statement.textContent = result == 'won' ? 'You won!' : 'You lost!';
-
-    computer.map(color => {
-      let ball = document.createElement('div');
-      ball.className = `guess-ball ${color}`;
-      computerColors.appendChild(ball);
-    });
-
-    results.style.setProperty('visibility', 'visible');
-    picking.classList.add('gameover');
-    results.classList.add('gameover');
-  }
-
-  function resetPreviousGame() {
-    const picking = document.querySelector('.pick-colors');
-    const rounds = document.querySelector('.rounds');
-    const line = document.querySelector('.line');
-    const results = document.querySelector('.results');
-    const statement = results.querySelector('.statement');
-    const computerColors = results.querySelector('.computer');
-
-    rounds.innerHTML = "";
-    statement.innerHTML = "";
-    computerColors.innerHTML = "";
-    line.style.width = 0;
-    lineWidth = 24;
-
-    results.style.setProperty('visibility', 'hidden');
-    picking.classList.remove('gameover');
-    results.classList.remove('gameover');
-
-    computer = createGame(convertToColor, generateRandomNumber);
-
-    console.log("computer's order:");
-    console.log(computer);
-    player = [];
-    helper = checkMatches(player, computer);
-  }
-
-
-  submitButton.addEventListener('click', function(event) {
+  function submitCheck(event) {
     const roundColors = document.querySelectorAll('.check .ball');
     const labels = document.querySelector('.labels');
     let wrapper = document.querySelector('.rounds');
@@ -259,10 +211,58 @@
     }
 
     roundColors.forEach(element => element.parentNode.removeChild(element));
+  }
 
-  }, false);
+  function gameOver(result) {
+    const results = document.querySelector('.results');
+    const picking = document.querySelector('.pick-colors');
+    const computerColors = results.querySelector('.computer');
+    const statement = results.querySelector('.statement');
 
-  newGame.addEventListener('click', function() {
-    resetPreviousGame();
-  }, false);
+    statement.textContent = result == 'won' ? 'You won!' : 'You lost!';
+
+    computer.map(color => {
+      let ball = document.createElement('div');
+      ball.className = `guess-ball ${color}`;
+      computerColors.appendChild(ball);
+    });
+
+    results.style.setProperty('visibility', 'visible');
+    picking.classList.add('gameover');
+    results.classList.add('gameover');
+  }
+
+  function resetPreviousGame() {
+    const picking = document.querySelector('.pick-colors');
+    const slots = document.querySelectorAll('.slot');
+    const rounds = document.querySelector('.rounds');
+    const line = document.querySelector('.line');
+    const results = document.querySelector('.results');
+    const statement = results.querySelector('.statement');
+    const computerColors = results.querySelector('.computer');
+
+    rounds.innerHTML = "";
+    statement.innerHTML = "";
+    computerColors.innerHTML = "";
+    line.style.width = 0;
+    lineWidth = 24;
+
+    slots.forEach(slot => slot.innerHTML = "");
+
+    results.style.setProperty('visibility', 'hidden');
+    picking.classList.remove('gameover');
+    results.classList.remove('gameover');
+
+    computer = createGame(convertToColor, generateRandomNumber);
+
+    console.log("computer's order:");
+    console.log(computer);
+    player = [];
+    helper = checkMatches(player, computer);
+  }
+
+
+  submitButton.addEventListener('click', submitCheck);
+  newGame.addEventListener('click', resetPreviousGame);
+  playButton.addEventListener('click', resetPreviousGame);
 }());

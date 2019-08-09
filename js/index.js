@@ -13,25 +13,47 @@
                  ? true : false;
 
   function hideRules () {
-    let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-
     if (isMobile) {
       body.classList.toggle('body--is-mobile');
-      navButton.classList.toggle('nav--is-mobile');
       navButtonText.textContent = "";
-    } else {
-      navButtonText.textContent = isDisplayed;
+      navButton.classList.toggle('opened');
+      confetti.classList.toggle('confetti--hidden');
+
+      if (navButton.classList.contains("opened")) {
+        body.classList.add('header--hidden');
+        body.classList.remove('header--visible');
+
+        window.setTimeout(() => {
+          header.style.display = "none"
+        }, 300);
+
+      } else {
+        header.style.display = "flex";
+
+        window.setTimeout(() => {
+          body.classList.remove('header--hidden');
+          body.classList.add('header--visible');
+        }, 100);
+      }
+
     }
 
-    navButton.classList.toggle('opened');
-    header.classList.toggle('hidden');
-    game.classList.toggle('game-hidden');
-    confetti.classList.toggle('confetti--hidden');
+    else {
+      let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
+      navButtonText.textContent = isDisplayed;
+
+
+      navButton.classList.toggle('opened');
+      body.classList.toggle('header--hidden');
+      confetti.classList.toggle('confetti--hidden');
+
+    }
 
     // if example is visible
     if (example.clientHeight > 0) {
-      example.classList.add('example-hidden');
-      localStorage.setItem('example', 'hidden')
+      body.classList.add('example--hidden');
+      localStorage.setItem('example', 'hidden');
+      localStorage.setItem('display', 'none');
     }
 
     // if header is visible
@@ -42,19 +64,19 @@
     }
   }
 
-
   function handleLocalStorage() {
+    // mobile
     if (isMobile) {
-
       if (localStorage.getItem('display')) {
         body.classList.add('body--is-mobile');
+        body.classList.add('example--hidden');
+        body.classList.add('header--hidden');
         navButton.classList.add('opened');
         navButtonText.textContent = "";
-        header.classList.add('hidden');
-        game.classList.add('game-hidden');
         confetti.classList.add('confetti--hidden');
-        example.style.setProperty('display', 'none');
         overlay.classList.add('overlay--hidden');
+
+        header.style.display = "none"
       }
 
       else {
@@ -64,17 +86,21 @@
           navButtonText.textContent = "";
           overlay.classList.add('overlay--hidden');
         });
+
+        if (localStorage.getItem('example')) {
+          body.classList.add('example--hidden');
+        }
       }
     }
 
+    // desktop
     else {
       if (localStorage.getItem('display')) {
         navButtonText.textContent = "open";
         navButton.classList.add('opened');
-        header.classList.add('hidden');
-        game.classList.add('game-hidden');
+        body.classList.add('header--hidden');
+        body.classList.add('example--hidden');
         confetti.classList.add('confetti--hidden');
-        example.style.setProperty('display', 'none');
 
         game.addEventListener('transitionend', function() {
           overlay.classList.add('overlay--hidden');
@@ -87,7 +113,7 @@
         overlay.classList.add('overlay--hidden');
 
         if (localStorage.getItem('example')) {
-          example.style.setProperty('display', 'none');
+          body.classList.add('example--hidden');
         }
       }
     }

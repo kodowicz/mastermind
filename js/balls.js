@@ -4,7 +4,7 @@
   const colorSlots = document.querySelectorAll(".color-slot");
 
   let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  ? true : false;
+                 ? true : false;
 
   let ball;
   let ballsPosition;
@@ -67,12 +67,14 @@
 
   function getTarget(slots, event) {
     let slotTargetIndex;
+    const offsetX = isMobile ? event.targetTouches[0].pageX : event.pageX
+    const offsetY = isMobile ? event.targetTouches[0].pageY : event.pageY
 
     slots.forEach((slot, index) => {
-      if ( event.pageX > slot.left &&
-         event.pageX < slot.right &&
-         event.pageY > slot.top &&
-         event.pageY < slot.bottom
+      if ( offsetX > slot.left &&
+         offsetX < slot.right &&
+         offsetY > slot.top &&
+         offsetY < slot.bottom
        ) {
         slotTargetIndex = index
       }
@@ -208,12 +210,12 @@
 
       } else {
         // replace ball from slot to empty slot
-        if (ballParent.matches(".slot")) {
+        if (ball && ballParent.matches(".slot")) {
           assignBallToSlot(ballParent, null, ballParent, slotTarget);
         }
 
         // replace ball from placeholder to empty slot
-        else {
+        else if (ball) {
           const newElement = createElement(ball.className, ball.id);
           assignBallToSlot(slotTarget, newElement, ballParent, slotTarget);
         }
@@ -229,7 +231,7 @@
   }
 
   // mobile move ball
-  function touchingBall (event) {
+  function touchingBall(event) {
     if (isMoved) {
       const slots = document.querySelectorAll(".slot");
       const colorSlots = document.querySelectorAll(".color-slot");
@@ -306,8 +308,10 @@
       }
 
     } else {
-      if (event.target.matches(".ball") || event.target.matches(".ball") && isColorChanged) {
+      if (event.target.matches(".ball")) {
+        // new list of balls
         const balls = document.querySelectorAll(".ball");
+
         ball = event.target;
         ballsPosition = getSlotPosition(balls);
         ballTargetIndex = getTarget(ballsPosition, event);
