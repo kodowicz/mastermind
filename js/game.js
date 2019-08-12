@@ -1,7 +1,7 @@
 (function initPlay(){
   // generate colors
   const submitButton = document.getElementById('submit');
-  const playButton = document.querySelector('.play-button');
+  const playButton = document.getElementById('play-game');
   const newGame = document.getElementById('new-game');
   const confettiBox = document.querySelector('.confetti');
   let computer = createGame(convertToColor, generateRandomNumber);
@@ -153,7 +153,7 @@
   }
 
   function createRound(colors, helpers) {
-    let wrapper = document.querySelector('.rounds');
+    let wrapper = document.getElementById('rounds');
 
     let round = document.createElement('div');
     let guesses = document.createElement('div');
@@ -181,10 +181,10 @@
   }
 
   function submitCheck(event) {
-    const roundColors = document.querySelectorAll('.check .ball');
-    const labels = document.querySelector('.labels');
-    let wrapper = document.querySelector('.rounds');
-    const line = document.querySelector('.line');
+    const roundColors = document.querySelectorAll('.checking .ball');
+    // const labels = document.querySelector('.labels');
+    let wrapper = document.getElementById('rounds');
+    const line = document.getElementById('line');
     let increaseWidth = isMobile ? 40 : 48;
 
     if (roundColors.length < 4) return;
@@ -214,10 +214,10 @@
   }
 
   function gameOver(result) {
-    const results = document.querySelector('.results');
-    const picking = document.querySelector('.pick-colors');
-    const computerColors = results.querySelector('.computer');
-    const statement = results.querySelector('.statement');
+    const results = document.getElementById('results');
+    const picking = document.getElementById('pick-colors');
+    const computerColors = document.getElementById('computer');
+    const statement = document.getElementById('statement');
 
     statement.textContent = result == 'won' ? 'You won!' : 'You lost!';
 
@@ -228,18 +228,18 @@
     });
 
     results.style.setProperty('visibility', 'visible');
-    picking.classList.add('gameover');
-    results.classList.add('gameover');
+    picking.classList.add('picking--gameover');
+    results.classList.add('results--gameover');
   }
 
   function resetPreviousGame() {
-    const picking = document.querySelector('.pick-colors');
+    const picking = document.getElementById('pick-colors');
     const slots = document.querySelectorAll('.slot');
-    const rounds = document.querySelector('.rounds');
-    const line = document.querySelector('.line');
-    const results = document.querySelector('.results');
-    const statement = results.querySelector('.statement');
-    const computerColors = results.querySelector('.computer');
+    const rounds = document.getElementById('rounds');
+    const line = document.getElementById('line');
+    const results = document.getElementById('results');
+    const statement = results.getElementById('statement');
+    const computerColors = results.getElementById('computer');
 
     rounds.innerHTML = "";
     statement.innerHTML = "";
@@ -250,8 +250,8 @@
     slots.forEach(slot => slot.innerHTML = "");
 
     results.style.setProperty('visibility', 'hidden');
-    picking.classList.remove('gameover');
-    results.classList.remove('gameover');
+    picking.classList.remove('picking--gameover');
+    results.classList.remove('results--gameover');
 
     computer = createGame(convertToColor, generateRandomNumber);
 

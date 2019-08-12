@@ -137,7 +137,7 @@ body {
   z-index: 2;
 }
 
-.nav-button {
+.nav__button {
   margin: 10px 0;
   background: none;
   border: none;
@@ -148,36 +148,36 @@ body {
   align-items: center;
   outline: none;
 
-  .nav-button--text {
+  .nav__button-text {
     opacity: 1;
     transition: opacity 0.1s;
   }
 
-  &.nav--hidden .nav-button--text {
+  &.nav--hidden .nav__button-text {
     opacity: 0
   }
 }
 
-.nav-button--text {
+.nav__button-text {
   padding: 0 0.4rem;
   transition: transform 0.2s ease-in-out;
 }
 
-.arrow {
+.nav__arrow {
   width: 20px;
 }
 
-.close-arrow {
+.nav__arrow--close {
   display: inline;
   opacity: 1
 }
 
-.open-arrow {
+.nav__arrow--open {
   opacity: 0;
   transform: translateX(-27px);
 }
 
-.shaft {
+.nav__shaft {
   width: 20px;
   background: $light;
   display: block;
@@ -185,21 +185,21 @@ body {
   position: relative;
 }
 
-.shaft:before,
-.shaft:after {
+.nav__shaft:before,
+.nav__shaft:after {
   width: 6px;
 }
 
-.arrow .shaft:before {
+.nav__arrow .nav__shaft:before {
   transform: rotate(40deg);
 }
 
-.arrow .shaft:after {
+.nav__arrow .nav__shaft:after {
   transform: rotate(-40deg);
 }
 
-.arrow .shaft:before,
-.arrow .shaft:after {
+.nav__arrow .nav__shaft:before,
+.nav__arrow .nav__shaft:after {
   content: '';
   background: $light;
   display: block;
@@ -207,43 +207,43 @@ body {
   position: absolute
 }
 
-.open-arrow .shaft:before,
-.open-arrow .shaft:after {
+.nav__arrow--open .nav__shaft:before,
+.nav__arrow--open .nav__shaft:after {
   top: 0;
   right: 0
 }
 
-.close-arrow .shaft:before,
-.close-arrow .shaft:after {
+.nav__arrow--close .nav__shaft:before,
+.nav__arrow--close .nav__shaft:after {
   top: 0;
   left: 0
 }
 
-.open-arrow .shaft:before {
+.nav__arrow--open .nav__shaft:before {
   transform-origin: top right;
 }
 
-.open-arrow .shaft:after {
+.nav__arrow--open .nav__shaft:after {
   transform-origin: bottom right;
 }
 
-.close-arrow .shaft:before {
+.nav__arrow--close .nav__shaft:before {
   transform-origin: top left;
 }
 
-.close-arrow .shaft:after {
+.nav__arrow--close .nav__shaft:after {
   transform-origin: bottom left;
 }
 
-.nav-button.opened .close-arrow {
+.nav__button.opened .nav__arrow--close {
   opacity: 0;
 
-  & .shaft {
+  & .nav__shaft {
     opacity: 0
   }
 }
 
-.nav-button.opened .open-arrow {
+.nav__button.opened .nav__arrow--open {
   opacity: 1;
 }
 
@@ -254,33 +254,33 @@ body {
     z-index: 2
   }
 
-  .nav-button {
+  .nav__button {
     padding: 0.5rem 1rem;
   }
 
-  .arrow {
+  .nav__arrow {
     width: 30px;
     transition: transform 0.2s ease-out, opacity 0.1s ease-in-out
   }
 
-  .open-arrow {
+  .nav__arrow--open {
     transform: translateX(-45px);
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out
   }
 
-  .shaft {
+  .nav__shaft {
     width: 30px;
   }
 
-  .nav-button.opened .nav-button--text {
+  .nav__button.opened .nav__button-text {
     transform: translateX(-30px);
   }
 
-  .nav-button.opened .close-arrow {
+  .nav__button.opened .nav__arrow--close {
     transform: translateX(-5px);
   }
 
-  .nav-button.opened .open-arrow {
+  .nav__button.opened .nav__arrow--open {
     transform: translateX(-30px);
   }
 }
@@ -307,7 +307,7 @@ body {
   transition: opacity 0.3s ease-out
 }
 
-.title {
+.header__title {
   margin-top: 3.5rem;
   margin-bottom: 3rem;
   font-size: 4.5rem;
@@ -317,22 +317,22 @@ body {
   text-shadow: 0px 0px 5px rgba(255,255,255,.8)
 }
 
-ul {
+.header__list {
   padding: 0 7vw;
   font-weight: 400;
 }
 
-li {
+.header__list-item {
   margin: 15px 0;
   list-style: none;
 }
 
-.play-wrapper {
+.header__button-wrapper {
   width: min-content;
   margin: 40px auto;
 }
 
-.play-button {
+.header__button {
   background: none;
   border: 1px solid $light;
   border-radius: 25px;
@@ -349,12 +349,12 @@ li {
               background 0.2s ease-out
 }
 
-.play-button:hover {
+.header__button:hover {
   background: $darkgray;
   box-shadow: 3px 5px 10px 0px rgba(0,0,0,.2);
 }
 
-.play-button:active {
+.header__button:active {
   transform: translateY(2px);
   box-shadow: 3px 0px 10px -3px rgba(0,0,0,.2);
 }
@@ -373,17 +373,17 @@ li {
     transition: opacity 0.2s ease-in-out, transform 0.5s ease-in-out
   }
 
-  .title {
+  .header__title {
     font-size: 9rem;
     margin: 2rem 0;
   }
 
-  ul {
+  .header__list {
     padding: 0;
     margin: 40px 15px 50px;
   }
 
-  .play-button {
+  .header__button {
     font-size: 1.5rem;
   }
 }
@@ -417,7 +417,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   z-index: 2;
 }
 
-.example-img {
+.example__img {
   object-fit: contain;
   width: 100%;
   height: 100%;
@@ -450,28 +450,28 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   border-radius: 7px;
 }
 
-.results.gameover {
+.results--gameover {
   transform: rotateX(0deg);
   opacity: 1;
   transition: transform 0.2s ease-out 0.2s, opacity 0.3s ease-out 0.2s;
 }
 
-.statement {
+.results__statement {
   font-size: 2rem;
   margin: 0;
-  padding: 2.5rem 0 1.2rem 0;
+  padding: 2.5rem 0 0;//1.2rem 0;
   text-align: center;
   color: $darkgray;
 }
 
-.computer {
+.results__computer {
   display: flex;
   width: calc(30px * 4 + 5px * 3);
   justify-content: space-between;
   margin: 15px auto 20px auto
 }
 
-.new-game {
+.results__wrapper {
   width: min-content;
   margin: 0 auto;
 }
@@ -495,7 +495,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
     height: $gameHeight
   }
 
-  .computer {
+  .results__computer {
     width: calc(37px * 4 + 5px * 3);
   }
 }
@@ -529,7 +529,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
     transition: transform .4s ease-in-out 0.1s;
   }
 
-  .statement {
+  .results__statement {
     font-size: 2.5rem;
   }
 
@@ -546,11 +546,11 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
 
 
 
-.pick-colors {
+.picking {
   transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-.pick-colors.gameover {
+.picking--gameover {
   transform: rotateX(-20deg);
   opacity: 0;
 }
@@ -621,7 +621,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
 
 
 
-.check {
+.checking {
   width: 100%;
   max-width: 300px;
   height: 50px;
@@ -647,7 +647,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   background: $gray;
 }
 
-.button {
+.results__button, .checking__button {
   padding: 0.5rem 1rem;
   font-family: $font;
   font-weight: 500;
@@ -667,13 +667,13 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
               background 0.1s ease-out*/
 }
 
-.button:hover {
+.results__button:hover, .checking__button:hover {
   background: $darkgray;
   border: none;
   color: $light;
 }
 
-.button:active {
+.results__button:active, .checking__button:active {
   transform: translateY(2px);
   box-shadow: 0px 5px 10px -5px rgba(0,0,0,.1);
   border: 1px solid $darkgray;
@@ -689,18 +689,12 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
 
 
 
-.checked-colors {
-  // margin-top: 30px;
-  // padding: 0 17%;
+.checked {
   margin: 30px auto 0;
   width: 185px
 }
 
-.rounds {
-  margin-top: -1px;
-}
-
-.labels {
+.checked__labels {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -710,14 +704,14 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   transition: opacity 0.2s ease-in, transform 0.25s ease-in
 }
 
-.left-label {
+.checked__left-label {
   width: 70%;
   margin: 0;
   padding: 5px 0;
   border-bottom: 1px solid $label;
 }
 
-.right-label {
+.checked__right-label {
   width: 20%;
   margin: 0;
   padding: 5px 0;
@@ -725,7 +719,7 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   text-align: center;
 }
 
-.line {
+.checked__line {
   position: absolute;
   top: 0;
   left: 76%;
@@ -735,6 +729,10 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
   transform-origin: left
 }
 
+.rounds {
+  margin-top: -1px;
+}
+
 .round {
   display: flex;
   justify-content: space-between;
@@ -742,19 +740,19 @@ $gameMargin: calc((100vh - #{$gameHeight}) / 2);
 }
 
 @media (min-width: 350px) {
-  .checked-colors {
+  .checked {
     width: 250px
   }
 }
 
 @media (min-width: 1000px) {
-  .labels {
-    font-size: 1.2rem;
-    height: 30px;
+  .checked {
+    margin-top: 40px;
   }
 
-  .checked-colors {
-    margin-top: 40px;
+  .checked__labels {
+    font-size: 1.2rem;
+    height: 30px;
   }
 }
 

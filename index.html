@@ -13,32 +13,32 @@
     <div class="confetti"></div>
 
     <nav class="nav">
-      <button class="nav-button" type="button" name="button">
-        <span class="close-arrow arrow">
-          <span class="shaft"></span>
+      <button class="nav__button" id="navigation" type="button" name="button">
+        <span class="nav__arrow nav__arrow--close">
+          <span class="nav__shaft"></span>
         </span>
-        <span class="nav-button--text">close</span>
-        <span class="open-arrow arrow">
-          <span class="shaft"></span>
+        <span class="nav__button-text">close</span>
+        <span class="nav__arrow nav__arrow--open">
+          <span class="nav__shaft"></span>
         </span>
       </button>
     </nav>
 
     <header class="header">
-      <h1 class="title">Mastermind</h1>
-      <div class="info">
-        <ul>
-          <li>Drag and drop balls into the check zone.</li>
-          <li>Order balls in a proper sequence that you expect computer did.</li>
-          <li>You have 7 attempts to find out the solution.</li>
-          <li>The ratings show you, how close you are to the solution. Black
+      <h1 class="header__title">Mastermind</h1>
+      <div class="header__info">
+        <ul class="header__">
+          <li class="header__list-item">Drag and drop balls into the check zone.</li>
+          <li class="header__list-item">Order balls in a proper sequence that you expect computer did.</li>
+          <li class="header__list-item">You have 7 attempts to find out the solution.</li>
+          <li class="header__list-item">The ratings show you, how close you are to the solution. Black
             pin tells you that you have got some ball in the right color and room.
             The gray one appears if some ball has got solely proper color.
             One pin for one ball.</li>
         </ul>
 
-        <div class="play-wrapper">
-          <button class="play-button" type="button" name="button">play a game</button>
+        <div class="header__button-wrapper">
+          <button class="header__button" id="play-game" type="button" name="button">play a game</button>
         </div>
       </div>
     </header>
@@ -46,18 +46,18 @@
 
     <div class="game">
       <div class="example">
-        <img class="example-img" src="images/example.jpg" draggable="false" alt="An example of game">
+        <img class="example__img" src="images/example.jpg" draggable="false" alt="An example of game">
       </div>
 
-      <div class="results">
-        <p class="statement"></p>
-        <div class="computer"></div>
-        <div class="new-game">
-          <button class="button" type="button" id="new-game" name="button">new game</button>
+      <div class="results" id="results">
+        <p class="results__statement" id="statement"></p>
+        <div class="results__computer" id="computer"></div>
+        <div class="results__wrapper">
+          <button class="results__button" type="button" id="new-game" name="button">new game</button>
         </div>
       </div>
 
-      <div class="pick-colors">
+      <div class="picking" id="pick-colors">
         <div class="colors">
           <div class="color-slot">
             <div class="ball orange" id="orange" data-color="orange"></div>
@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <div class="check">
+        <div class="checking">
           <div class="slots">
             <div class="slot"></div>
             <div class="slot"></div>
@@ -87,19 +87,19 @@
             <div class="slot"></div>
           </div>
 
-          <button class="button" id="submit" type="button">check</button>
+          <button class="checking__button" id="submit" type="button">check</button>
         </div>
       </div>
 
-      <div class="checked-colors">
-        <div class="labels">
-          <p class="left-label">guesses</p>
-          <div class="line"></div>
-          <p class="right-label">ratings</p>
+      <div class="checked">
+        <div class="checked__labels">
+          <p class="checked__left-label">guesses</p>
+          <div class="checked__line" id="line"></div>
+          <p class="checked__right-label">ratings</p>
         </div>
 
 
-        <div class="rounds"></div>
+        <div class="rounds" id="rounds"></div>
       </div>
     </div>
 

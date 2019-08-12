@@ -1,11 +1,10 @@
 (function initApp(){
-  const body = document.getElementsByTagName('body')[0];
-  const navButton = document.querySelector('.nav-button');
-  const navButtonText = navButton.querySelector('.nav-button--text');
+  const navigation = document.getElementById('navigation');
+  const navigationText = navigation.querySelector('.nav__button-text');
   const header = document.querySelector('.header');
   const game = document.querySelector('.game');
   const example = document.querySelector('.example');
-  const playButton = document.querySelector('.play-button');
+  const playButton = document.getElementById('play-game');
   const overlay = document.querySelector('.overlay');
   const confetti = document.querySelector('.confetti');
 
@@ -14,14 +13,14 @@
 
   function hideRules () {
     if (isMobile) {
-      body.classList.toggle('body--is-mobile');
-      navButtonText.textContent = "";
-      navButton.classList.toggle('opened');
+      document.body.classList.toggle('body--is-mobile');
+      navigationText.textContent = "";
+      navigation.classList.toggle('opened');
       confetti.classList.toggle('confetti--hidden');
 
-      if (navButton.classList.contains("opened")) {
-        body.classList.add('header--hidden');
-        body.classList.remove('header--visible');
+      if (navigation.classList.contains("opened")) {
+        document.body.classList.add('header--hidden');
+        document.body.classList.remove('header--visible');
 
         window.setTimeout(() => {
           header.style.display = "none"
@@ -31,33 +30,33 @@
         header.style.display = "flex";
 
         window.setTimeout(() => {
-          body.classList.remove('header--hidden');
-          body.classList.add('header--visible');
+          document.body.classList.remove('header--hidden');
+          document.body.classList.add('header--visible');
         }, 100);
       }
 
     }
 
     else {
-      let isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-      navButtonText.textContent = isDisplayed;
+      let isDisplayed = navigationText.textContent == 'close' ? 'open' : 'close';
+      navigationText.textContent = isDisplayed;
 
 
-      navButton.classList.toggle('opened');
-      body.classList.toggle('header--hidden');
+      navigation.classList.toggle('opened');
+      document.body.classList.toggle('header--hidden');
       confetti.classList.toggle('confetti--hidden');
 
     }
 
     // if example is visible
     if (example.clientHeight > 0) {
-      body.classList.add('example--hidden');
+      document.body.classList.add('example--hidden');
       localStorage.setItem('example', 'hidden');
       localStorage.setItem('display', 'none');
     }
 
     // if header is visible
-    if (navButton.classList.contains("opened")) {
+    if (navigation.classList.contains("opened")) {
       localStorage.setItem('display', 'none');
     } else {
       localStorage.removeItem('display');
@@ -65,14 +64,15 @@
   }
 
   function handleLocalStorage() {
+    console.log('ta funkcja sie nie wykonuje');
     // mobile
     if (isMobile) {
       if (localStorage.getItem('display')) {
-        body.classList.add('body--is-mobile');
-        body.classList.add('example--hidden');
-        body.classList.add('header--hidden');
-        navButton.classList.add('opened');
-        navButtonText.textContent = "";
+        document.body.classList.add('body--is-mobile');
+        document.body.classList.add('example--hidden');
+        document.body.classList.add('header--hidden');
+        navigation.classList.add('opened');
+        navigationText.textContent = "";
         confetti.classList.add('confetti--hidden');
         overlay.classList.add('overlay--hidden');
 
@@ -80,15 +80,15 @@
       }
 
       else {
-        navButton.classList.add('nav--hidden');
+        navigation.classList.add('nav--hidden');
 
-        navButton.addEventListener('transitionend', function() {
-          navButtonText.textContent = "";
+        navigation.addEventListener('transitionend', function() {
+          navigationText.textContent = "";
           overlay.classList.add('overlay--hidden');
         });
 
         if (localStorage.getItem('example')) {
-          body.classList.add('example--hidden');
+          document.body.classList.add('example--hidden');
         }
       }
     }
@@ -96,10 +96,10 @@
     // desktop
     else {
       if (localStorage.getItem('display')) {
-        navButtonText.textContent = "open";
-        navButton.classList.add('opened');
-        body.classList.add('header--hidden');
-        body.classList.add('example--hidden');
+        navigationText.textContent = "open";
+        navigation.classList.add('opened');
+        document.body.classList.add('header--hidden');
+        document.body.classList.add('example--hidden');
         confetti.classList.add('confetti--hidden');
 
         game.addEventListener('transitionend', function() {
@@ -108,19 +108,19 @@
       }
 
       else if (!localStorage.getItem('display')) {
-        navButtonText.textContent = "close";
-        navButton.classList.remove('opened');
+        navigationText.textContent = "close";
+        navigation.classList.remove('opened');
         overlay.classList.add('overlay--hidden');
 
         if (localStorage.getItem('example')) {
-          body.classList.add('example--hidden');
+          document.body.classList.add('example--hidden');
         }
       }
     }
   }
 
   // hidden information
-  navButton.addEventListener('click', function () {
+  navigation.addEventListener('click', function () {
     hideRules();
   });
 

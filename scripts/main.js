@@ -304,7 +304,7 @@
 (function initPlay() {
   // generate colors
   var submitButton = document.getElementById('submit');
-  var playButton = document.querySelector('.play-button');
+  var playButton = document.getElementById('play-game');
   var newGame = document.getElementById('new-game');
   var confettiBox = document.querySelector('.confetti');
   var computer = createGame(convertToColor, generateRandomNumber);
@@ -441,7 +441,7 @@
   }
 
   function createRound(colors, helpers) {
-    var wrapper = document.querySelector('.rounds');
+    var wrapper = document.getElementById('rounds');
     var round = document.createElement('div');
     var guesses = document.createElement('div');
     var ratings = document.createElement('div');
@@ -464,10 +464,10 @@
   }
 
   function submitCheck(event) {
-    var roundColors = document.querySelectorAll('.check .ball');
-    var labels = document.querySelector('.labels');
-    var wrapper = document.querySelector('.rounds');
-    var line = document.querySelector('.line');
+    var roundColors = document.querySelectorAll('.checking .ball'); // const labels = document.querySelector('.labels');
+
+    var wrapper = document.getElementById('rounds');
+    var line = document.getElementById('line');
     var increaseWidth = isMobile ? 40 : 48;
     if (roundColors.length < 4) return;
     roundColors.forEach(function (color) {
@@ -495,10 +495,10 @@
   }
 
   function gameOver(result) {
-    var results = document.querySelector('.results');
-    var picking = document.querySelector('.pick-colors');
-    var computerColors = results.querySelector('.computer');
-    var statement = results.querySelector('.statement');
+    var results = document.getElementById('results');
+    var picking = document.getElementById('pick-colors');
+    var computerColors = document.getElementById('computer');
+    var statement = document.getElementById('statement');
     statement.textContent = result == 'won' ? 'You won!' : 'You lost!';
     computer.map(function (color) {
       var ball = document.createElement('div');
@@ -506,18 +506,18 @@
       computerColors.appendChild(ball);
     });
     results.style.setProperty('visibility', 'visible');
-    picking.classList.add('gameover');
-    results.classList.add('gameover');
+    picking.classList.add('picking--gameover');
+    results.classList.add('results--gameover');
   }
 
   function resetPreviousGame() {
-    var picking = document.querySelector('.pick-colors');
+    var picking = document.getElementById('pick-colors');
     var slots = document.querySelectorAll('.slot');
-    var rounds = document.querySelector('.rounds');
-    var line = document.querySelector('.line');
-    var results = document.querySelector('.results');
-    var statement = results.querySelector('.statement');
-    var computerColors = results.querySelector('.computer');
+    var rounds = document.getElementById('rounds');
+    var line = document.getElementById('line');
+    var results = document.getElementById('results');
+    var statement = results.getElementById('statement');
+    var computerColors = results.getElementById('computer');
     rounds.innerHTML = "";
     statement.innerHTML = "";
     computerColors.innerHTML = "";
@@ -527,8 +527,8 @@
       return slot.innerHTML = "";
     });
     results.style.setProperty('visibility', 'hidden');
-    picking.classList.remove('gameover');
-    results.classList.remove('gameover');
+    picking.classList.remove('picking--gameover');
+    results.classList.remove('results--gameover');
     computer = createGame(convertToColor, generateRandomNumber);
     console.log("computer's order:");
     console.log(computer);
@@ -542,54 +542,53 @@
 })();
 
 (function initApp() {
-  var body = document.getElementsByTagName('body')[0];
-  var navButton = document.querySelector('.nav-button');
-  var navButtonText = navButton.querySelector('.nav-button--text');
+  var navigation = document.getElementById('navigation');
+  var navigationText = navigation.querySelector('.nav__button-text');
   var header = document.querySelector('.header');
   var game = document.querySelector('.game');
   var example = document.querySelector('.example');
-  var playButton = document.querySelector('.play-button');
+  var playButton = document.getElementById('play-game');
   var overlay = document.querySelector('.overlay');
   var confetti = document.querySelector('.confetti');
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
 
   function hideRules() {
     if (isMobile) {
-      body.classList.toggle('body--is-mobile');
-      navButtonText.textContent = "";
-      navButton.classList.toggle('opened');
+      document.body.classList.toggle('body--is-mobile');
+      navigationText.textContent = "";
+      navigation.classList.toggle('opened');
       confetti.classList.toggle('confetti--hidden');
 
-      if (navButton.classList.contains("opened")) {
-        body.classList.add('header--hidden');
-        body.classList.remove('header--visible');
+      if (navigation.classList.contains("opened")) {
+        document.body.classList.add('header--hidden');
+        document.body.classList.remove('header--visible');
         window.setTimeout(function () {
           header.style.display = "none";
         }, 300);
       } else {
         header.style.display = "flex";
         window.setTimeout(function () {
-          body.classList.remove('header--hidden');
-          body.classList.add('header--visible');
+          document.body.classList.remove('header--hidden');
+          document.body.classList.add('header--visible');
         }, 100);
       }
     } else {
-      var isDisplayed = navButtonText.textContent == 'close' ? 'open' : 'close';
-      navButtonText.textContent = isDisplayed;
-      navButton.classList.toggle('opened');
-      body.classList.toggle('header--hidden');
+      var isDisplayed = navigationText.textContent == 'close' ? 'open' : 'close';
+      navigationText.textContent = isDisplayed;
+      navigation.classList.toggle('opened');
+      document.body.classList.toggle('header--hidden');
       confetti.classList.toggle('confetti--hidden');
     } // if example is visible
 
 
     if (example.clientHeight > 0) {
-      body.classList.add('example--hidden');
+      document.body.classList.add('example--hidden');
       localStorage.setItem('example', 'hidden');
       localStorage.setItem('display', 'none');
     } // if header is visible
 
 
-    if (navButton.classList.contains("opened")) {
+    if (navigation.classList.contains("opened")) {
       localStorage.setItem('display', 'none');
     } else {
       localStorage.removeItem('display');
@@ -597,53 +596,54 @@
   }
 
   function handleLocalStorage() {
-    // mobile
+    console.log('ta funkcja sie nie wykonuje'); // mobile
+
     if (isMobile) {
       if (localStorage.getItem('display')) {
-        body.classList.add('body--is-mobile');
-        body.classList.add('example--hidden');
-        body.classList.add('header--hidden');
-        navButton.classList.add('opened');
-        navButtonText.textContent = "";
+        document.body.classList.add('body--is-mobile');
+        document.body.classList.add('example--hidden');
+        document.body.classList.add('header--hidden');
+        navigation.classList.add('opened');
+        navigationText.textContent = "";
         confetti.classList.add('confetti--hidden');
         overlay.classList.add('overlay--hidden');
         header.style.display = "none";
       } else {
-        navButton.classList.add('nav--hidden');
-        navButton.addEventListener('transitionend', function () {
-          navButtonText.textContent = "";
+        navigation.classList.add('nav--hidden');
+        navigation.addEventListener('transitionend', function () {
+          navigationText.textContent = "";
           overlay.classList.add('overlay--hidden');
         });
 
         if (localStorage.getItem('example')) {
-          body.classList.add('example--hidden');
+          document.body.classList.add('example--hidden');
         }
       }
     } // desktop
     else {
         if (localStorage.getItem('display')) {
-          navButtonText.textContent = "open";
-          navButton.classList.add('opened');
-          body.classList.add('header--hidden');
-          body.classList.add('example--hidden');
+          navigationText.textContent = "open";
+          navigation.classList.add('opened');
+          document.body.classList.add('header--hidden');
+          document.body.classList.add('example--hidden');
           confetti.classList.add('confetti--hidden');
           game.addEventListener('transitionend', function () {
             overlay.classList.add('overlay--hidden');
           });
         } else if (!localStorage.getItem('display')) {
-          navButtonText.textContent = "close";
-          navButton.classList.remove('opened');
+          navigationText.textContent = "close";
+          navigation.classList.remove('opened');
           overlay.classList.add('overlay--hidden');
 
           if (localStorage.getItem('example')) {
-            body.classList.add('example--hidden');
+            document.body.classList.add('example--hidden');
           }
         }
       }
   } // hidden information
 
 
-  navButton.addEventListener('click', function () {
+  navigation.addEventListener('click', function () {
     hideRules();
   }); // play a game
 
