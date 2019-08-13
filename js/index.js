@@ -51,23 +51,22 @@
     // if example is visible
     if (example.clientHeight > 0) {
       document.body.classList.add('example--hidden');
-      localStorage.setItem('example', 'hidden');
-      localStorage.setItem('display', 'none');
+      localStorage.setItem('display-example', 'hidden');
+      localStorage.setItem('display-rules', 'none');
     }
 
     // if header is visible
     if (navigation.classList.contains("opened")) {
-      localStorage.setItem('display', 'none');
+      localStorage.setItem('display-rules', 'none');
     } else {
-      localStorage.removeItem('display');
+      localStorage.removeItem('display-rules');
     }
   }
 
   function handleLocalStorage() {
-    console.log('ta funkcja sie nie wykonuje');
     // mobile
     if (isMobile) {
-      if (localStorage.getItem('display')) {
+      if (localStorage.getItem('display-rules') === "none") {
         document.body.classList.add('body--is-mobile');
         document.body.classList.add('example--hidden');
         document.body.classList.add('header--hidden');
@@ -75,19 +74,15 @@
         navigationText.textContent = "";
         confetti.classList.add('confetti--hidden');
         overlay.classList.add('overlay--hidden');
-
-        header.style.display = "none"
+        header.style.display = "none";
       }
 
       else {
         navigation.classList.add('nav--hidden');
+        navigationText.textContent = "";
+        overlay.classList.add('overlay--hidden');
 
-        navigation.addEventListener('transitionend', function() {
-          navigationText.textContent = "";
-          overlay.classList.add('overlay--hidden');
-        });
-
-        if (localStorage.getItem('example')) {
+        if (localStorage.getItem('display-example') === "hidden") {
           document.body.classList.add('example--hidden');
         }
       }
@@ -95,24 +90,24 @@
 
     // desktop
     else {
-      if (localStorage.getItem('display')) {
+      if (localStorage.getItem('display-rules') === "none") {
         navigationText.textContent = "open";
         navigation.classList.add('opened');
         document.body.classList.add('header--hidden');
         document.body.classList.add('example--hidden');
         confetti.classList.add('confetti--hidden');
 
-        game.addEventListener('transitionend', function() {
+        window.setTimeout(() => {
           overlay.classList.add('overlay--hidden');
-        });
+        }, 700);
       }
 
-      else if (!localStorage.getItem('display')) {
+      else {
         navigationText.textContent = "close";
         navigation.classList.remove('opened');
         overlay.classList.add('overlay--hidden');
 
-        if (localStorage.getItem('example')) {
+        if (localStorage.getItem('display-example')) {
           document.body.classList.add('example--hidden');
         }
       }
@@ -127,7 +122,7 @@
   // play a game
   playButton.addEventListener('click', function() {
     hideRules();
-    localStorage.setItem('example', 'hidden');
+    localStorage.setItem('display-example', 'hidden');
   });
 
   handleLocalStorage();
