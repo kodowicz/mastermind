@@ -135,32 +135,23 @@ body {
   top: 0;
   left: 7vw;
   z-index: 2;
+  mix-blend-mode: difference;
 }
 
 .nav__button {
   margin: 10px 0;
   background: none;
   border: none;
-  color: $light;
+  color: inherit;
   padding: 0.5rem 0;
   font-family: $font;
   display: flex;
   align-items: center;
   outline: none;
 
-  .nav__button-text {
-    opacity: 1;
-    transition: opacity 0.1s;
-  }
-
   &.nav--hidden .nav__button-text {
     opacity: 0
   }
-}
-
-.nav__button-text {
-  padding: 0 0.4rem;
-  transition: transform 0.2s ease-in-out;
 }
 
 .nav__arrow {
@@ -174,7 +165,7 @@ body {
 
 .nav__arrow--open {
   opacity: 0;
-  transform: translateX(-27px);
+  transform: translateX(-19px);
 }
 
 .nav__shaft {
@@ -258,14 +249,22 @@ body {
     padding: 0.5rem 1rem;
   }
 
+  .nav__button-text {
+    padding: 0 0.4rem;
+    transition: transform .2s ease-in-out
+  }
+
   .nav__arrow {
     width: 30px;
-    transition: transform 0.2s ease-out, opacity 0.1s ease-in-out
   }
 
   .nav__arrow--open {
     transform: translateX(-45px);
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out
+  }
+
+  .nav__arrow--close {
+    transform: translateX(0px);
+    transition: transform .3s ease-out, opacity .2s ease-in-out
   }
 
   .nav__shaft {
@@ -277,10 +276,11 @@ body {
   }
 
   .nav__button.opened .nav__arrow--close {
-    transform: translateX(-5px);
+    transform: translateX(15px);
   }
 
   .nav__button.opened .nav__arrow--open {
+    transition: opacity .3s ease-in-out, transform .2s ease-in-out;
     transform: translateX(-30px);
   }
 }

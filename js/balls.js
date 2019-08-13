@@ -226,7 +226,6 @@
     }
 
     isMoved = false;
-    lastTargetSlot = null;
     ball = null;
   }
 

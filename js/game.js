@@ -238,8 +238,8 @@
     const rounds = document.getElementById('rounds');
     const line = document.getElementById('line');
     const results = document.getElementById('results');
-    const statement = results.getElementById('statement');
-    const computerColors = results.getElementById('computer');
+    const statement = document.getElementById('statement');
+    const computerColors = document.getElementById('computer');
 
     rounds.innerHTML = "";
     statement.innerHTML = "";
